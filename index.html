@@ -266,7 +266,10 @@ function prettyNote(n){
     const dt=new Date(+y,+mo-1,+d);
     return `${WD[dt.getDay()]} ${dt.getDate()} ${MON[dt.getMonth()].slice(0,3)}`;});
 }
-const shown=()=>allItems().filter(i=>!off.has(i.course)&&(!q||
+/* personal events are appended after the built-ins, so the list must be
+   re-sorted before anything reads its first/last date */
+const byDate=(a,b)=>a.date.localeCompare(b.date)||String(a.when).localeCompare(String(b.when));
+const shown=()=>allItems().sort(byDate).filter(i=>!off.has(i.course)&&(!q||
   q.split(/\s+/).filter(Boolean).every(w=>
     (i.title+" "+i.course+" "+i.kind).toLowerCase().includes(w))));
 function stats(){
