@@ -1,0 +1,504 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>MS1 Exams &amp; Assignments — Class of 2030</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,600;12..96,800&family=IBM+Plex+Mono:wght@400;600&family=Inter+Tight:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+:root{--page:#eef1f6;--card:#fff;--ink:#0e1118;--ink2:#39414f;--muted:#78828f;
+ --rule:#dde3ec;--rule2:#eef1f6;--deep:#141922;--now:#d92e4e}
+*{box-sizing:border-box}
+body{margin:0;background:var(--page);color:var(--ink);font-family:"Inter Tight",system-ui,sans-serif;font-size:14px;-webkit-font-smoothing:antialiased}
+.wrap{max-width:1080px;margin:0 auto;padding:20px 18px 70px}
+header{background:var(--deep);color:#fff;border-radius:14px 14px 0 0;padding:22px 22px 18px}
+h1{font-family:"Bricolage Grotesque",sans-serif;font-weight:800;font-size:27px;margin:0;letter-spacing:-.02em}
+.sub{color:#8e9bb0;font-size:13px;margin-top:6px;line-height:1.5}
+.stats{display:flex;flex-wrap:wrap;gap:8px;margin-top:16px}
+.stat{background:rgba(255,255,255,.08);border:1px solid rgba(255,255,255,.13);border-radius:9px;padding:7px 12px}
+.stat b{font-family:"Bricolage Grotesque",sans-serif;font-size:17px;display:block}
+.stat span{font-size:11px;color:#8e9bb0;font-family:"IBM Plex Mono",monospace;letter-spacing:.06em;text-transform:uppercase}
+.bar{background:var(--card);border-bottom:1px solid var(--rule);padding:12px 18px;display:flex;flex-wrap:wrap;gap:8px;align-items:center;position:sticky;top:0;z-index:5}
+button{font:inherit;cursor:pointer}
+.chip{display:inline-flex;align-items:center;gap:7px;border:1px solid var(--rule);background:#fff;border-radius:999px;padding:5px 12px;font-size:12.5px;font-weight:500;color:var(--ink2)}
+.chip .sw{width:9px;height:9px;border-radius:2px;background:var(--c)}
+.chip b{font-family:"IBM Plex Mono",monospace;font-size:10.5px;font-weight:600;background:#eef1f6;color:#5b6675;border-radius:999px;padding:1px 6px}
+.chip:hover{border-color:#b6c0cf}
+.chip.on{background:var(--deep);border-color:var(--deep);color:#fff}
+.chip.on b{background:rgba(255,255,255,.2);color:#fff}
+.bar .spacer{flex:1}
+.srch{position:relative;flex:0 1 240px;min-width:170px}
+.srch input{width:100%;padding:7px 10px 7px 28px;border:1px solid var(--rule);border-radius:8px;font:inherit;font-size:13px}
+.srch input:focus{outline:none;border-color:#9fb0c6;box-shadow:0 0 0 3px rgba(120,150,200,.15)}
+.srch .mag{position:absolute;left:9px;top:7px;color:#9aa3b0;transform:rotate(-45deg)}
+.body{background:var(--card);border-radius:0 0 14px 14px;overflow:hidden;box-shadow:0 1px 2px rgba(16,22,34,.06),0 12px 28px -18px rgba(16,22,34,.3)}
+.mon{padding:14px 18px 6px;border-top:1px solid var(--rule2);display:flex;align-items:baseline;gap:10px}
+.mon:first-child{border-top:0}
+.mon h2{font-family:"Bricolage Grotesque",sans-serif;font-weight:800;font-size:17px;margin:0;letter-spacing:-.01em}
+.mon span{font-family:"IBM Plex Mono",monospace;font-size:10.5px;color:var(--muted);letter-spacing:.06em;text-transform:uppercase}
+.row{display:grid;grid-template-columns:78px 1fr 130px;gap:14px;padding:10px 18px;border-top:1px solid var(--rule2);align-items:start}
+.row:hover{background:#fafbfd}
+.row.soon{background:#fffdf3}
+.dt{font-family:"IBM Plex Mono",monospace;font-size:11.5px;color:var(--ink2);line-height:1.4}
+.dt b{display:block;font-family:"Bricolage Grotesque",sans-serif;font-size:16px;font-weight:700}
+.dt i{font-style:normal;color:var(--muted);font-size:10.5px}
+.ti{min-width:0}
+.ti .name{font-size:14px;font-weight:600;line-height:1.35}
+.ti .meta{margin-top:4px;display:flex;flex-wrap:wrap;gap:7px;align-items:center;font-size:11.5px;color:var(--muted)}
+.pill{display:inline-flex;align-items:center;gap:5px;font-size:11px;font-weight:500;
+ border:1px solid color-mix(in srgb,var(--c) 30%,#fff);background:color-mix(in srgb,var(--c) 11%,#fff);
+ color:color-mix(in srgb,var(--c) 78%,var(--ink));border-radius:999px;padding:1px 9px}
+.kind{font-family:"IBM Plex Mono",monospace;font-size:9.5px;letter-spacing:.1em;text-transform:uppercase;
+ border-radius:4px;padding:2px 6px;font-weight:600}
+.kind.Exam{background:#fdecef;color:#a92846}
+.kind.OSCE{background:#fdf0e8;color:#a2542a}
+.kind.Quiz{background:#eaf1fa;color:#33608f}
+.kind\.IRAT{background:#eef0f6;color:#4a5470}
+.kind.Assignment{background:#eef7ec;color:#3d7031}
+.kind.Assessment{background:#f1f2f5;color:#5b6675}
+.wt{font-family:"IBM Plex Mono",monospace;font-size:11px;color:#a92846;font-weight:600}
+.tm{text-align:right;font-family:"IBM Plex Mono",monospace;font-size:12px;color:var(--ink2);line-height:1.5}
+.tm i{display:block;font-style:normal;font-size:10.5px;color:var(--muted)}
+.note{font-size:11px;color:var(--muted);font-style:italic}
+.empty{padding:50px 18px;text-align:center;color:var(--muted)}
+.row{display:grid;grid-template-columns:78px 1fr 132px;gap:14px;padding:10px 18px;border-top:1px solid var(--rule2);align-items:start}
+.row:hover{background:#fafbfd}
+.row.soon{background:#fffdf3}
+.dt{font-family:"IBM Plex Mono",monospace;font-size:11.5px;color:var(--ink2);line-height:1.4}
+.dt b{display:block;font-family:"Bricolage Grotesque",sans-serif;font-size:16px;font-weight:700}
+.dt i{font-style:normal;color:var(--muted);font-size:10.5px}
+.ti{min-width:0}
+.ti .name{font-size:14px;font-weight:600;line-height:1.35}
+.ti .name .star{color:#d92e4e;margin-right:4px}
+.ti .meta{margin-top:4px;display:flex;flex-wrap:wrap;gap:7px;align-items:center;font-size:11.5px;color:var(--muted)}
+.pill{display:inline-flex;align-items:center;gap:5px;font-size:11px;font-weight:500;
+ border:1px solid color-mix(in srgb,var(--c) 30%,#fff);background:color-mix(in srgb,var(--c) 11%,#fff);
+ color:color-mix(in srgb,var(--c) 78%,var(--ink));border-radius:999px;padding:1px 9px}
+.kind{font-family:"IBM Plex Mono",monospace;font-size:9.5px;letter-spacing:.1em;text-transform:uppercase;border-radius:4px;padding:2px 6px;font-weight:600}
+.kind.Exam{background:#fdecef;color:#a92846}
+.kind.OSCE{background:#fdf0e8;color:#a2542a}
+.kind.Quiz{background:#eaf1fa;color:#33608f}
+.kind.IRATTRAT{background:#eef0f6;color:#4a5470}
+.kind.Assignment{background:#eef7ec;color:#3d7031}
+.kind.Practice{background:#f3eefa;color:#63479b}
+.wt{font-family:"IBM Plex Mono",monospace;font-size:11px;color:#a92846;font-weight:600}
+.note{font-size:11px;color:var(--muted);font-style:italic}
+.brl{margin-top:5px;font-size:11.5px;color:#6b5417;background:#fdf8e8;border-radius:6px;padding:4px 9px;display:inline-block}
+.brl b{font-family:"IBM Plex Mono",monospace;font-size:9px;letter-spacing:.1em;text-transform:uppercase;margin-right:5px}
+.tm{text-align:right;font-family:"IBM Plex Mono",monospace;font-size:12px;color:var(--ink2);line-height:1.5}
+.tm i{display:block;font-style:normal;font-size:10.5px;color:var(--muted)}
+.seg{display:inline-flex;border:1px solid var(--rule);border-radius:8px;overflow:hidden}
+.seg button{background:#fff;border:0;border-left:1px solid var(--rule);padding:6px 12px;font-size:12.5px;color:var(--muted)}
+.seg button:first-child{border-left:0}
+.seg button.on{background:var(--deep);color:#fff}
+.warnbar{padding:9px 18px;background:#fff4f5;border-bottom:1px solid #f6d9de;color:#9b3247;font-size:12px}
+.ev.mine{border-style:dashed;cursor:pointer}
+.ev.mine:hover{filter:brightness(.97)}
+.scrim{position:fixed;inset:0;background:rgba(14,17,24,.34);display:none;z-index:40}
+.scrim.on{display:block}
+.dlg{position:fixed;z-index:50;left:50%;top:50%;transform:translate(-50%,-50%);
+ width:min(430px,calc(100% - 26px));background:#fff;border-radius:14px;padding:20px 22px 20px;
+ box-shadow:0 30px 70px -22px rgba(10,14,22,.6);display:none}
+.dlg.on{display:block}
+.dlg h3{font-family:"Bricolage Grotesque",sans-serif;font-size:18px;margin:0 0 4px}
+.dlg .hint{font-size:12px;color:var(--muted);margin:0 0 14px;line-height:1.45}
+.f{margin-bottom:11px}
+.f label{display:block;font-family:"IBM Plex Mono",monospace;font-size:10px;letter-spacing:.1em;
+ text-transform:uppercase;color:var(--muted);margin-bottom:5px;font-weight:600}
+.f input{width:100%;padding:8px 10px;border:1px solid var(--rule);border-radius:8px;font:inherit;font-size:13px}
+.f input:focus{outline:none;border-color:#9fb0c6;box-shadow:0 0 0 3px rgba(120,150,200,.15)}
+.two{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+.sw{display:flex;gap:7px;flex-wrap:wrap}
+.swb{width:26px;height:26px;border-radius:7px;border:2px solid transparent;background:var(--c);padding:0;cursor:pointer}
+.swb.on{border-color:var(--ink);box-shadow:0 0 0 2px #fff inset}
+.acts{display:flex;gap:8px;align-items:center;margin-top:16px}
+.solid{background:var(--deep);border:1px solid var(--deep);color:#fff;border-radius:8px;padding:8px 15px;font-size:13px;font-weight:600}
+.ghostb{background:#fff;border:1px solid var(--rule);color:var(--ink2);border-radius:8px;padding:8px 13px;font-size:13px}
+.ghostb#f-del{border-color:#f0c6cf;color:#b02a45}
+@media (max-width:700px){.dlg{top:0;left:0;transform:none;width:100%;height:100%;border-radius:0;overflow-y:auto}.two{grid-template-columns:1fr}}
+.cal{border-top:1px solid var(--rule2)}
+.cal:first-child{border-top:0}
+.grid{display:grid;grid-template-columns:repeat(7,minmax(0,1fr))}
+.hd{font-family:"IBM Plex Mono",monospace;font-size:9.5px;letter-spacing:.13em;text-transform:uppercase;
+ color:var(--muted);padding:7px 8px 6px;background:#f6f8fb;border-left:1px solid var(--rule2);border-bottom:1px solid var(--rule)}
+.hd:first-child{border-left:0}
+.cell{min-height:112px;border-left:1px solid var(--rule2);border-bottom:1px solid var(--rule2);padding:5px 6px 8px}
+.cell:nth-child(7n+1){border-left:0}
+.cell.out{background:#fbfcfd}
+.cell.out .num{color:#c8cfd9}
+.cell.today .num{background:var(--now);color:#fff;border-radius:999px;width:21px;height:21px;
+ display:inline-flex;align-items:center;justify-content:center}
+.num{font-family:"Bricolage Grotesque",sans-serif;font-weight:700;font-size:12.5px;color:var(--ink2);margin-bottom:4px}
+.ev{border:1px solid color-mix(in srgb,var(--c) 32%,#fff);background:color-mix(in srgb,var(--c) 12%,#fff);
+ color:color-mix(in srgb,var(--c) 80%,var(--ink));border-radius:6px;padding:4px 6px;margin-bottom:4px;font-size:11px;line-height:1.32}
+.ev.Exam,.ev.OSCE{background:color-mix(in srgb,var(--c) 22%,#fff);border-color:color-mix(in srgb,var(--c) 45%,#fff)}
+.ev.Practice{border-style:dashed}
+.ev .t{font-family:"IBM Plex Mono",monospace;font-size:8.5px;letter-spacing:.03em;opacity:.85}
+.ev .n{font-weight:600;margin-top:1px}
+.ev .star{color:#d92e4e;margin-right:3px;font-size:10px}
+.ev.opens{background:#fff;border-style:dotted;border-color:color-mix(in srgb,var(--c) 38%,#fff);
+ color:color-mix(in srgb,var(--c) 58%,#8a92a0);box-shadow:none}
+.ev.opens .n{font-weight:500}
+.row.ghost{background:#fcfdfe}
+.row.ghost .ti .name{font-weight:500;color:var(--muted)}
+.kind.opensk{background:#fff;border:1px dotted #b9c2cf;color:#8a92a0}
+.ev.sat{box-shadow:inset 2.5px 0 0 var(--c)}
+.ev .w{font-family:"IBM Plex Mono",monospace;font-size:9px;color:#a92846;margin-top:2px}
+.ev .no{font-size:9.5px;font-style:italic;opacity:.75;margin-top:2px}
+.ev .br{margin-top:4px;padding-top:4px;border-top:1px dotted currentColor}
+.ev .br b{display:block;font-family:"IBM Plex Mono",monospace;font-size:8px;letter-spacing:.11em;
+ text-transform:uppercase;opacity:.8;margin-bottom:1px}
+.ev .br span{display:block;font-size:9.5px;font-weight:500}
+footer{margin-top:14px;color:var(--muted);font-size:11.5px;line-height:1.6}
+@media (max-width:700px){
+ .row{grid-template-columns:58px 1fr;gap:10px;padding:9px 12px}
+ .tm{grid-column:2;text-align:left;margin-top:2px}
+ .grid{grid-template-columns:repeat(7,minmax(0,1fr))}
+ .cell{min-height:64px;padding:3px 3px 5px}
+ .hd{padding:5px 2px;font-size:8px;letter-spacing:.04em}
+ .ev{font-size:8.5px;padding:2px 3px;border-radius:4px}
+ .ev .t,.ev .no,.ev .w{font-size:7.5px}
+ .ev .br span{font-size:8px}
+ .num{font-size:11px}
+ .bar{padding:10px 12px;position:static}
+ .wrap{padding:12px 10px 50px}
+ h1{font-size:21px}
+}
+@media print{
+ body{background:#fff}
+ .bar,.stats,.dlg,.scrim,.warnbar{display:none}
+ header{background:#fff;color:#000;border-bottom:2px solid #000;border-radius:0}
+ .sub{color:#555}
+ .body{box-shadow:none}
+ .cell,.cal{break-inside:avoid}
+ .mon h2{break-after:avoid}
+}
+</style>
+</head>
+<body>
+<div class="wrap">
+<header>
+  <h1>MS1 Exams &amp; Assignments</h1>
+  <div class="sub">HWCOM Class of 2030 &middot; every graded quiz, exam, OSCE and submission for the year.<br>
+    Built from the Canvas calendar plus the OME-approved Clinical Skills and Clinical Research syllabi. Read-only — nothing here is personal.<br>
+    <b style="color:#ff8f9f">&#9733;</b> marks anything sat in person &mdash; IRAT/TRATs, in-class quizzes, exams and OSCEs. Everything unstarred is submitted on CanvasMed.<br>
+    Dotted boxes mark the day a quiz <b>opens</b> on CanvasMed — the solid box is the deadline.</div>
+  <div class="stats" id="stats"></div>
+</header>
+<div class="bar" id="bar"></div>
+<div id="warnbar" class="warnbar" hidden></div>
+<div class="scrim" id="scrim"></div>
+<div class="dlg" id="dlg" role="dialog" aria-modal="true">
+  <h3 id="dlgt">Add your own event</h3>
+  <p class="hint">Only you can see this. It's saved in this browser and never leaves your device.</p>
+  <div class="f"><label for="f-t">What is it</label><input type="text" id="f-t" maxlength="90" placeholder="Study group, shift, flight home…"></div>
+  <div class="two">
+    <div class="f"><label for="f-d">Date</label><input type="date" id="f-d"></div>
+    <div class="f"><label for="f-w">Time</label><input type="text" id="f-w" maxlength="16" placeholder="14:00 or all day"></div>
+  </div>
+  <div class="f"><label for="f-n">Note (optional)</label><input type="text" id="f-n" maxlength="90"></div>
+  <div class="f"><label>Colour</label><div class="sw" id="f-c"></div></div>
+  <div class="acts">
+    <button class="ghostb" id="f-del" hidden>Delete</button><span style="flex:1"></span>
+    <button class="ghostb" id="f-x">Cancel</button><button class="solid" id="f-s">Save</button>
+  </div>
+</div>
+<main class="body" id="list"></main>
+<div class="scrim" id="scrim"></div>
+<div class="card" id="card" role="dialog" aria-modal="true">
+  <button class="x" id="cardx" aria-label="Close">&times;</button>
+  <div id="cardbody"></div>
+</div>
+<footer>
+  <b>Version 09 August 2026.</b> If you're reading this at a web address, refresh for the latest — Mia republishes it when Canvas changes.
+  If you downloaded the file, it's frozen at this date. Events you add yourself are stored only in your own browser and survive updates.<br>
+  Times are Eastern. Canvas is the source of truth — check it before relying on any date here.<br>
+  Some Foundations III readiness quizzes only publish an open date in Canvas; those are marked.
+</footer>
+</div>
+<script>
+const ITEMS=[{"date":"2026-08-03","code":"BMS 6001","course":"Foundations I","title":"Unit I: FC 1 Readiness Quiz: Lysosomal Storage Disease","when":"12:00","kind":"Quiz","mode":"Opens","note":"due 2026-08-04 23:55","weight":"","ghost":true},{"date":"2026-08-04","code":"BMS 6001","course":"Foundations I","title":"Unit I: FC 1 Readiness Quiz: Lysosomal Storage Disease","when":"23:55","kind":"Quiz","mode":"On CanvasMed","note":"","weight":""},{"date":"2026-08-06","code":"BMS 6015","course":"Clinical Skills I","title":"Patient-Centered Interviewing Session 2 Readiness Quiz","when":"12:30","kind":"Quiz","mode":"Opens","note":"due 2026-08-11 13:00","weight":"","ghost":true},{"date":"2026-08-07","code":"BMS 6001","course":"Foundations I","title":"Unit I: IRAT/TRAT","when":"08:15–10:15","kind":"IRAT/TRAT","mode":"In class","note":"","weight":""},{"date":"2026-08-07","code":"BMS 6001","course":"Foundations I","title":"Unit I: Checkpoint Quiz","when":"12:00","kind":"Quiz","mode":"Opens","note":"due 2026-08-09 23:55","weight":"","ghost":true},{"date":"2026-08-07","code":"BMS 6042","course":"Foundations III","title":"Formaldehyde Safety Quiz","when":"23:55","kind":"Quiz","mode":"On CanvasMed","note":"","weight":""},{"date":"2026-08-09","code":"BMS 6001","course":"Foundations I","title":"Unit I: Checkpoint Quiz","when":"23:55","kind":"Quiz","mode":"On CanvasMed","note":"opens 2026-08-07 12:00","weight":""},{"date":"2026-08-10","code":"BMS 6001","course":"Foundations I","title":"Unit I: FC 2 Readiness Quiz: Biology of Cancer","when":"12:00","kind":"Quiz","mode":"Opens","note":"due 2026-08-11 23:55","weight":"","ghost":true},{"date":"2026-08-11","code":"BMS 6001","course":"Foundations I","title":"Unit I Cell Biology Practice Quiz (NBME)","when":"00:00","kind":"Practice","mode":"Opens","note":"due 2026-08-12 23:59","weight":"","ghost":true},{"date":"2026-08-11","code":"BMS 6015","course":"Clinical Skills I","title":"Patient-Centered Interviewing Session 2 Readiness Quiz","when":"13:00","kind":"Quiz","mode":"On CanvasMed","note":"","weight":""},{"date":"2026-08-11","code":"BMS 6042","course":"Foundations III","title":"Histology I Worksheet","when":"23:55","kind":"Assignment","mode":"On CanvasMed","note":"","weight":""},{"date":"2026-08-11","code":"BMS 6001","course":"Foundations I","title":"Unit I: FC 2 Readiness Quiz: Biology of Cancer","when":"23:55","kind":"Quiz","mode":"On CanvasMed","note":"","weight":""},{"date":"2026-08-12","code":"BMS 6001","course":"Foundations I","title":"Unit I Cell Biology Practice Quiz (NBME)","when":"23:59","kind":"Practice","mode":"On NBME","note":"opens 2026-08-11 00:00","weight":"","bring":["Your Examinee ID (Panther ID)","Your NBME start-up code"]},{"date":"2026-08-13","code":"BMS 6015","course":"Clinical Skills I","title":"Readiness Quiz — Intro to Preceptorship & Patient Centered Interviewing III","when":"12:30","kind":"Quiz","mode":"Opens","note":"due 2026-08-18 13:00","weight":"","ghost":true},{"date":"2026-08-14","code":"BMS 6001","course":"Foundations I","title":"Unit I: End of Unit CTE Exam and Final Exam","when":"08:00–12:00","kind":"Exam","mode":"In class","note":"","weight":""},{"date":"2026-08-18","code":"BMS 6015","course":"Clinical Skills I","title":"Readiness Quiz — Intro to Preceptorship & Patient Centered Interviewing III","when":"13:00","kind":"Quiz","mode":"On CanvasMed","note":"opens 2026-08-13 12:30","weight":""},{"date":"2026-08-21","code":"BMS 6001","course":"Foundations I","title":"Unit II: IRAT/TRAT 1","when":"10:00–11:50","kind":"IRAT/TRAT","mode":"In class","note":"","weight":""},{"date":"2026-08-25","code":"BMS 6001","course":"Foundations I","title":"Unit II: FC2 Readiness Quiz","when":"12:00","kind":"Quiz","mode":"On CanvasMed","note":"close date not published in Canvas","weight":""},{"date":"2026-08-25","code":"BMS 6042","course":"Foundations III","title":"Embryology and Histology Quiz","when":"17:00","kind":"Quiz","mode":"On CanvasMed","note":"close date not published in Canvas","weight":""},{"date":"2026-08-25","code":"BMS 6042","course":"Foundations III","title":"Introduction to Anatomy Quiz","when":"17:00","kind":"Quiz","mode":"Opens","note":"due 2026-08-27 23:55","weight":"","ghost":true},{"date":"2026-08-27","code":"BMS 6042","course":"Foundations III","title":"Embryology & Histology Quiz","when":"23:55","kind":"Quiz","mode":"On CanvasMed","note":"","weight":""},{"date":"2026-08-27","code":"BMS 6042","course":"Foundations III","title":"Introduction to Anatomy Quiz","when":"23:55","kind":"Quiz","mode":"On CanvasMed","note":"opens 2026-08-25 17:00","weight":""},{"date":"2026-08-28","code":"BMS 6001","course":"Foundations I","title":"Unit II: IRAT/TRAT 2","when":"10:10–12:00","kind":"IRAT/TRAT","mode":"In class","note":"","weight":""},{"date":"2026-08-28","code":"BMS 6001","course":"Foundations I","title":"Unit II: Checkpoint Quiz 2","when":"12:00","kind":"Quiz","mode":"On CanvasMed","note":"close date not published in Canvas","weight":""},{"date":"2026-09-04","code":"BMS 6042","course":"Foundations III","title":"Readiness Quiz 1","when":"17:00","kind":"Quiz","mode":"On CanvasMed","note":"close date not published in Canvas","weight":""},{"date":"2026-09-09","code":"BMS 6000","course":"Clinical Research","title":"Exam 1 — cumulative, Sessions 1–6","when":"11:00–12:00","kind":"Exam","mode":"In class","note":"AHC4 101","weight":"20%"},{"date":"2026-09-09","code":"BMS 6001","course":"Foundations I","title":"Unit III: FC1 Readiness Quiz","when":"12:00","kind":"Quiz","mode":"On CanvasMed","note":"close date not published in Canvas","weight":""},{"date":"2026-09-10","code":"BMS 6042","course":"Foundations III","title":"In Class Quiz 1 (see description)","when":"in class","kind":"Quiz","mode":"In class","note":"","weight":""},{"date":"2026-09-14","code":"BMS 6001","course":"Foundations I","title":"Unit III: IRAT/TRAT 1","when":"08:00–09:30","kind":"IRAT/TRAT","mode":"In class","note":"","weight":""},{"date":"2026-09-14","code":"BMS 6015","course":"Clinical Skills I","title":"OSCE #1 — The Patient-Centered Interview","when":"13:00–17:00","kind":"OSCE","mode":"In class","note":"5th floor OSCE rooms","weight":"","bring":["Business-casual attire and a white coat"]},{"date":"2026-09-15","code":"BMS 6015","course":"Clinical Skills I","title":"OSCE #1 — The Patient-Centered Interview","when":"13:00–17:00","kind":"OSCE","mode":"In class","note":"5th floor OSCE rooms","weight":"","bring":["Business-casual attire and a white coat"]},{"date":"2026-09-16","code":"BMS 6001","course":"Foundations I","title":"Unit III: FC2 Readiness Quiz","when":"12:00","kind":"Quiz","mode":"On CanvasMed","note":"close date not published in Canvas","weight":""},{"date":"2026-09-17","code":"BMS 6015","course":"Clinical Skills I","title":"Readiness Quiz — Introduction to The Physical Exam & Vital Signs","when":"12:30","kind":"Exam","mode":"Opens","note":"due 2026-09-22 13:00","weight":"","ghost":true},{"date":"2026-09-18","code":"BMS 6001","course":"Foundations I","title":"Unit III: Checkpoint Quiz 2","when":"12:00","kind":"Quiz","mode":"On CanvasMed","note":"close date not published in Canvas","weight":""},{"date":"2026-09-18","code":"BMS 6015","course":"Clinical Skills I","title":"Midterm #1 Communication (In-House and NBME)","when":"13:00–15:00","kind":"Exam","mode":"In class","note":"AHC4 101","weight":""},{"date":"2026-09-18","code":"BMS 6042","course":"Foundations III","title":"Readiness Quiz 2","when":"17:00","kind":"Quiz","mode":"On CanvasMed","note":"close date not published in Canvas","weight":""},{"date":"2026-09-20","code":"BMS 6001","course":"Foundations I","title":"Unit III: FC3 Readiness Quiz","when":"12:00","kind":"Quiz","mode":"On CanvasMed","note":"close date not published in Canvas","weight":""},{"date":"2026-09-21","code":"BMS 6001","course":"Foundations I","title":"Unit III: IRAT/TRAT 2","when":"08:00–09:30","kind":"IRAT/TRAT","mode":"In class","note":"","weight":""},{"date":"2026-09-22","code":"BMS 6015","course":"Clinical Skills I","title":"Readiness Quiz — Introduction to The Physical Exam & Vital Signs","when":"13:00","kind":"Exam","mode":"On CanvasMed","note":"opens 2026-09-17 12:30","weight":""},{"date":"2026-09-22","code":"BMS 6015","course":"Clinical Skills I","title":"Introduction to The Physical Exam & Vital Signs Lecture","when":"13:00–14:00","kind":"Exam","mode":"In class","note":"AHC 2 170","weight":"","bring":["Loose, comfortable clothing for hands-on practice"]},{"date":"2026-09-22","code":"BMS 6042","course":"Foundations III","title":"In Class Quiz 2 (see description)","when":"in class","kind":"Quiz","mode":"In class","note":"","weight":""},{"date":"2026-09-24","code":"BMS 6015","course":"Clinical Skills I","title":"Readiness Quiz — The Head and Neck Examination","when":"12:30","kind":"Quiz","mode":"Opens","note":"due 2026-09-29 13:00","weight":"","ghost":true},{"date":"2026-09-25","code":"BMS 6042","course":"Foundations III","title":"Readiness Quiz 3","when":"17:00","kind":"Quiz","mode":"On CanvasMed","note":"close date not published in Canvas","weight":""},{"date":"2026-09-29","code":"BMS 6015","course":"Clinical Skills I","title":"Readiness Quiz — The Head and Neck Examination","when":"13:00","kind":"Quiz","mode":"On CanvasMed","note":"opens 2026-09-24 12:30","weight":""},{"date":"2026-09-29","code":"BMS 6042","course":"Foundations III","title":"In Class Quiz 3 (see description)","when":"in class","kind":"Quiz","mode":"In class","note":"","weight":""},{"date":"2026-09-30","code":"BMS 6000","course":"Clinical Research","title":"Preparatory Quiz 1 — Session 11","when":"10:05–10:20","kind":"Quiz","mode":"In class","note":"AHC2 170","weight":"2%"},{"date":"2026-10-01","code":"BMS 6015","course":"Clinical Skills I","title":"Readiness Quiz — The Cardiovascular Exam Lecture (Standardized Patient Demonstration)","when":"12:30","kind":"Exam","mode":"Opens","note":"due 2026-10-06 13:00","weight":"","ghost":true},{"date":"2026-10-02","code":"BMS 6042","course":"Foundations III","title":"Readiness Quiz 4","when":"17:00","kind":"Quiz","mode":"On CanvasMed","note":"close date not published in Canvas","weight":""},{"date":"2026-10-06","code":"BMS 6015","course":"Clinical Skills I","title":"Readiness Quiz — The Cardiovascular Exam Lecture (Standardized Patient Demonstration)","when":"13:00","kind":"Exam","mode":"On CanvasMed","note":"opens 2026-10-01 12:30","weight":""},{"date":"2026-10-06","code":"BMS 6015","course":"Clinical Skills I","title":"The Cardiovascular Exam Lecture (Standardized Patient Demonstration)","when":"13:00–14:00","kind":"Exam","mode":"In class","note":"AHC 2 170","weight":"","bring":["Loose, comfortable clothing for hands-on practice","Stethoscope"]},{"date":"2026-10-06","code":"BMS 6042","course":"Foundations III","title":"In Class Quiz 4 (see description)","when":"in class","kind":"Quiz","mode":"In class","note":"","weight":""},{"date":"2026-10-07","code":"BMS 6000","course":"Clinical Research","title":"Preparatory Quiz 2 — Session 14","when":"13:00–13:15","kind":"Quiz","mode":"In class","note":"AHC2 170","weight":"2%"},{"date":"2026-10-08","code":"BMS 6015","course":"Clinical Skills I","title":"Readiness Quiz — Pulmonary Physical Exam","when":"12:30","kind":"Exam","mode":"Opens","note":"due 2026-10-13 13:00","weight":"","ghost":true},{"date":"2026-10-09","code":"BMS 6042","course":"Foundations III","title":"Readiness Quiz 5","when":"17:00","kind":"Quiz","mode":"On CanvasMed","note":"close date not published in Canvas","weight":""},{"date":"2026-10-13","code":"BMS 6015","course":"Clinical Skills I","title":"Readiness Quiz — Pulmonary Physical Exam","when":"13:00","kind":"Exam","mode":"On CanvasMed","note":"opens 2026-10-08 12:30","weight":""},{"date":"2026-10-13","code":"BMS 6015","course":"Clinical Skills I","title":"Pulmonary Physical Exam Lecture","when":"13:00–14:00","kind":"Exam","mode":"In class","note":"AHC 2 170","weight":"","bring":["Stethoscope","Loose, comfortable clothing for hands-on practice"]},{"date":"2026-10-13","code":"BMS 6042","course":"Foundations III","title":"In Class Quiz 5 (see description)","when":"in class","kind":"Quiz","mode":"In class","note":"","weight":""},{"date":"2026-10-14","code":"BMS 6000","course":"Clinical Research","title":"Exam 2 — cumulative, Sessions 1–14","when":"14:00–15:00","kind":"Exam","mode":"In class","note":"AHC4 101","weight":"30%"},{"date":"2026-10-15","code":"BMS 6015","course":"Clinical Skills I","title":"Readiness Quiz — Abdominal Physical Exam","when":"12:30","kind":"Exam","mode":"Opens","note":"due 2026-10-20 13:00","weight":"","ghost":true},{"date":"2026-10-16","code":"BMS 6042","course":"Foundations III","title":"Readiness Quiz 6","when":"17:00","kind":"Quiz","mode":"On CanvasMed","note":"close date not published in Canvas","weight":""},{"date":"2026-10-20","code":"BMS 6015","course":"Clinical Skills I","title":"Readiness Quiz — Abdominal Physical Exam","when":"13:00","kind":"Exam","mode":"On CanvasMed","note":"opens 2026-10-15 12:30","weight":""},{"date":"2026-10-20","code":"BMS 6015","course":"Clinical Skills I","title":"Abdominal Physical Exam Lecture","when":"13:00–14:00","kind":"Exam","mode":"In class","note":"AHC2 170","weight":"","bring":["Stethoscope","Loose, comfortable clothing for hands-on practice"]},{"date":"2026-10-20","code":"BMS 6042","course":"Foundations III","title":"In Class Quiz 6 (see description)","when":"in class","kind":"Quiz","mode":"In class","note":"","weight":""},{"date":"2026-10-21","code":"BMS 6000","course":"Clinical Research","title":"Preparatory Quiz 3 — Session 17","when":"13:00–13:15","kind":"Quiz","mode":"In class","note":"AHC2 170","weight":"2%"},{"date":"2026-10-22","code":"BMS 6015","course":"Clinical Skills I","title":"Readiness Quiz — Musculoskeletal Exam","when":"12:30","kind":"Exam","mode":"Opens","note":"due 2026-10-27 13:00","weight":"","ghost":true},{"date":"2026-10-23","code":"BMS 6042","course":"Foundations III","title":"Readiness Quiz 7","when":"17:00","kind":"Quiz","mode":"On CanvasMed","note":"close date not published in Canvas","weight":""},{"date":"2026-10-27","code":"BMS 6015","course":"Clinical Skills I","title":"Readiness Quiz — Musculoskeletal Exam","when":"13:00","kind":"Exam","mode":"On CanvasMed","note":"opens 2026-10-22 12:30","weight":""},{"date":"2026-10-27","code":"BMS 6015","course":"Clinical Skills I","title":"Musculoskeletal Exam Lecture","when":"13:00–14:00","kind":"Exam","mode":"In class","note":"AHC2 170","weight":"","bring":["Loose, comfortable clothing for hands-on practice"]},{"date":"2026-10-27","code":"BMS 6042","course":"Foundations III","title":"In Class Quiz 7 (see description)","when":"in class","kind":"Quiz","mode":"In class","note":"","weight":""},{"date":"2026-10-28","code":"BMS 6000","course":"Clinical Research","title":"Preparatory Quiz 4 — Session 19","when":"13:00–13:15","kind":"Quiz","mode":"In class","note":"AHC2 170","weight":"2%"},{"date":"2026-11-06","code":"BMS 6042","course":"Foundations III","title":"Readiness Quiz 8","when":"17:00","kind":"Quiz","mode":"On CanvasMed","note":"close date not published in Canvas","weight":""},{"date":"2026-11-10","code":"BMS 6000","course":"Clinical Research","title":"Preparatory Quiz 5 — Session 20","when":"13:00–13:15","kind":"Quiz","mode":"In class","note":"AHC2 170","weight":"2%"},{"date":"2026-11-12","code":"BMS 6042","course":"Foundations III","title":"In Class Quiz 8 (see description)","when":"in class","kind":"Quiz","mode":"In class","note":"","weight":""},{"date":"2026-11-30","code":"BMS 6015","course":"Clinical Skills I","title":"OSCE #2 - Physical Exam","when":"13:00–17:00","kind":"OSCE","mode":"In class","note":"5th floor OSCE rooms","weight":"","bring":["Business-casual attire and a white coat"]},{"date":"2026-12-01","code":"BMS 6015","course":"Clinical Skills I","title":"OSCE #2 - Physical Exam","when":"13:00–17:00","kind":"OSCE","mode":"In class","note":"5th floor OSCE rooms","weight":"","bring":["Business-casual attire and a white coat"]},{"date":"2026-12-04","code":"BMS 6042","course":"Foundations III","title":"BMS: Readiness Quiz 10","when":"17:00","kind":"Quiz","mode":"On CanvasMed","note":"close date not published in Canvas","weight":""},{"date":"2026-12-08","code":"BMS 6042","course":"Foundations III","title":"In Class Quiz 10 (see description)","when":"in class","kind":"Quiz","mode":"In class","note":"","weight":""},{"date":"2026-12-09","code":"BMS 6000","course":"Clinical Research","title":"Session 22: Final Exam — cumulative, all sessions","when":"13:00–15:00","kind":"Exam","mode":"In class","note":"AHC4 101","weight":"40%"},{"date":"2026-12-14","code":"BMS 6015","course":"Clinical Skills I","title":"Physical In-House Exam (“Midterm 2”)","when":"13:00–15:00","kind":"Exam","mode":"In class","note":"","weight":""},{"date":"2027-01-07","code":"BMS 6015","course":"Clinical Skills I","title":"Readiness Quiz — MSK Upper Extremity","when":"12:30","kind":"Quiz","mode":"Opens","note":"due 2027-01-12 13:00","weight":"","ghost":true},{"date":"2027-01-12","code":"BMS 6015","course":"Clinical Skills I","title":"Readiness Quiz — MSK Upper Extremity","when":"13:00","kind":"Quiz","mode":"On CanvasMed","note":"opens 2027-01-07 12:30","weight":""},{"date":"2027-01-14","code":"BMS 6015","course":"Clinical Skills I","title":"Readiness Quiz — MSK Lower Extremity","when":"12:30","kind":"Quiz","mode":"Opens","note":"due 2027-01-19 13:00","weight":"","ghost":true},{"date":"2027-01-19","code":"BMS 6015","course":"Clinical Skills I","title":"Readiness Quiz — MSK Lower Extremity","when":"13:00","kind":"Quiz","mode":"On CanvasMed","note":"opens 2027-01-14 12:30","weight":""},{"date":"2027-01-21","code":"BMS 6015","course":"Clinical Skills I","title":"Pre-session Quiz — Neurology Physical Exam Lecture (SP demonstration)","when":"12:30","kind":"Exam","mode":"Opens","note":"due 2027-01-26 13:00","weight":"","ghost":true},{"date":"2027-01-26","code":"BMS 6015","course":"Clinical Skills I","title":"Pre-session Quiz — Neurology Physical Exam Lecture (SP demonstration)","when":"13:00","kind":"Exam","mode":"On CanvasMed","note":"opens 2027-01-21 12:30","weight":""},{"date":"2027-01-26","code":"BMS 6015","course":"Clinical Skills I","title":"Neurology Physical Exam Lecture (SP demonstration)","when":"13:00–14:00","kind":"Exam","mode":"In class","note":"AHC2 170","weight":"","bring":["T-shirt with sleeves that roll above the elbow, and pants that roll above the knee","Loose, comfortable clothing for hands-on practice","Pen light, Snellen chart and reflex hammer, if you bought them"]},{"date":"2027-02-15","code":"BMS 6015","course":"Clinical Skills I","title":"OSCE #3 — Preventative Health and Sexual History OSCE","when":"13:00–17:00","kind":"OSCE","mode":"In class","note":"AHC2 5th floor OSCE rooms","weight":"","bring":["Business-casual attire and a white coat"]},{"date":"2027-02-16","code":"BMS 6015","course":"Clinical Skills I","title":"OSCE #3 — Preventative Health and Sexual History OSCE","when":"13:00–17:00","kind":"OSCE","mode":"In class","note":"AHC2 5th floor OSCE rooms","weight":"","bring":["Business-casual attire and a white coat"]},{"date":"2027-02-23","code":"BMS 6015","course":"Clinical Skills I","title":"The Dermatologic Exam Lecture","when":"13:00–14:00","kind":"Exam","mode":"In class","note":"AHC2 170","weight":"","bring":["Business-casual attire and a white coat"]},{"date":"2027-02-26","code":"BMS 6015","course":"Clinical Skills I","title":"Pre-session Quiz — Motivational Interviewing 1","when":"12:30","kind":"Quiz","mode":"Opens","note":"due 2027-03-04 13:00","weight":"","ghost":true},{"date":"2027-03-04","code":"BMS 6015","course":"Clinical Skills I","title":"Pre-session Quiz — Motivational Interviewing 2","when":"12:30","kind":"Quiz","mode":"Opens","note":"due 2027-03-09 13:00","weight":"","ghost":true},{"date":"2027-03-04","code":"BMS 6015","course":"Clinical Skills I","title":"Pre-session Quiz — Motivational Interviewing 1","when":"13:00","kind":"Quiz","mode":"On CanvasMed","note":"opens 2027-02-26 12:30","weight":""},{"date":"2027-03-09","code":"BMS 6015","course":"Clinical Skills I","title":"Pre-session Quiz — Motivational Interviewing 2","when":"13:00","kind":"Quiz","mode":"On CanvasMed","note":"opens 2027-03-04 12:30","weight":""},{"date":"2027-04-06","code":"BMS 6015","course":"Clinical Skills I","title":"Geriatrics post-session quiz","when":"23:59","kind":"Quiz","mode":"On CanvasMed","note":"opens 2027-04-06 17:00","weight":""},{"date":"2027-04-13","code":"BMS 6015","course":"Clinical Skills I","title":"Geriatrics post-session quiz","when":"23:59","kind":"Quiz","mode":"On CanvasMed","note":"opens 2027-04-13 17:00","weight":""},{"date":"2027-04-20","code":"BMS 6015","course":"Clinical Skills I","title":"Geriatrics post-session quiz","when":"23:59","kind":"Quiz","mode":"On CanvasMed","note":"opens 2027-04-20 17:00","weight":""},{"date":"2027-05-04","code":"BMS 6015","course":"Clinical Skills I","title":"Final OSCE Prep","when":"13:00–13:45","kind":"OSCE","mode":"In class","note":"AHC2 170","weight":"","bring":["Business-casual attire and a white coat","Closed-toe shoes","No equipment needed","Arrive on time for check-in"]},{"date":"2027-05-04","code":"BMS 6015","course":"Clinical Skills I","title":"Optional OSCE Practice","when":"14:00–17:00","kind":"OSCE","mode":"In class","note":"5th floor OSCE rooms","weight":"","bring":["Business-casual attire and a white coat","Closed-toe shoes","No equipment needed","Arrive on time for check-in"]},{"date":"2027-05-10","code":"BMS 6015","course":"Clinical Skills I","title":"OSCE #4 — Final OSCE","when":"13:00–17:00","kind":"OSCE","mode":"In class","note":"AHC2 5th floor OSCE rooms ","weight":"","bring":["Business-casual attire and a white coat","Closed-toe shoes","No equipment needed","Arrive on time for check-in"]},{"date":"2027-05-11","code":"BMS 6015","course":"Clinical Skills I","title":"OSCE #4 — Final OSCE","when":"13:00–17:00","kind":"OSCE","mode":"In class","note":"AHC2 5th floor OSCE rooms ","weight":"","bring":["Business-casual attire and a white coat","Closed-toe shoes","No equipment needed","Arrive on time for check-in"]},{"date":"2027-05-13","code":"BMS 6015","course":"Clinical Skills I","title":"Readiness Quiz — The Breast and Pelvic Exam","when":"12:30","kind":"Exam","mode":"Opens","note":"due 2027-05-18 13:00","weight":"","ghost":true},{"date":"2027-05-18","code":"BMS 6015","course":"Clinical Skills I","title":"Readiness Quiz — The Breast and Pelvic Exam","when":"13:00","kind":"Exam","mode":"On CanvasMed","note":"opens 2027-05-13 12:30","weight":""},{"date":"2027-05-18","code":"BMS 6015","course":"Clinical Skills I","title":"The Breast and Pelvic Exam Lecture","when":"13:00–14:00","kind":"Exam","mode":"In class","note":"AHC2 170","weight":"","bring":["Loose, comfortable clothing for hands-on practice","Short, trimmed fingernails"]},{"date":"2027-05-28","code":"BMS 6015","course":"Clinical Skills I","title":"Readiness Quiz — Well-Male Exam","when":"12:30","kind":"Exam","mode":"Opens","note":"due 2027-06-01 13:00","weight":"","ghost":true},{"date":"2027-06-01","code":"BMS 6015","course":"Clinical Skills I","title":"Readiness Quiz — Well-Male Exam","when":"13:00","kind":"Exam","mode":"On CanvasMed","note":"opens 2027-05-28 12:30","weight":""},{"date":"2027-06-01","code":"BMS 6015","course":"Clinical Skills I","title":"Well-Male Exam Lecture","when":"13:00–14:00","kind":"Exam","mode":"In class","note":"AHC2 170","weight":"","bring":["Loose, comfortable clothing for hands-on practice","Short, trimmed fingernails"]},{"date":"2027-06-07","code":"BMS 6015","course":"Clinical Skills I","title":"Final Exam (In-House and NBME)","when":"13:00–15:00","kind":"Exam","mode":"In class","note":"AHC4 101","weight":""}];
+const COLOR={"Foundations I": "#4756c9", "Foundations II": "#7c46b8", "Foundations III": "#0d857c", "Clinical Skills I": "#bd2c66", "Clinical Research": "#4a8429"}; COLOR["My events"]="#4d5765";
+const MON=["January","February","March","April","May","June","July","August","September","October","November","December"];
+const WD=["Sun","Mon","Tue","Wed","Thu","Fri","Sat"];
+let off=new Set(), q="", view="cal", openKey=null, MINE=[], canSave=true;
+const KEY="ms1-shared-exams-v1";
+const MYCOLORS=["#4d5765","#1c6f92","#5a7a34","#a8562f","#7a4a86","#b0483f","#2f7f8f"];
+function loadMine(){
+  try{ const raw=localStorage.getItem(KEY); if(raw) MINE=JSON.parse(raw)||[]; }
+  catch(e){ canSave=false; }
+}
+function save(){
+  if(!canSave) return;
+  try{ localStorage.setItem(KEY,JSON.stringify(MINE)); }catch(e){ canSave=false; warn(); }
+}
+function probe(){ try{localStorage.setItem(KEY+"-t","1");localStorage.removeItem(KEY+"-t");}catch(e){canSave=false;} }
+function warn(){
+  const w=document.getElementById("warnbar"); if(!w) return;
+  w.hidden=false;
+  w.textContent="This browser won't let the page remember events you add — they'll last until you close the tab. Opening the page from a web address rather than a downloaded file fixes it.";
+}
+const uid=()=>Math.random().toString(36).slice(2,9);
+const allItems=()=>ITEMS.concat(MINE.map(m=>({...m,course:"My events",mine:true})));
+const pk=s=>{const[a,b,c]=s.split("-").map(Number);return new Date(a,b-1,c);};
+const esc=s=>String(s).replace(/[&<>"]/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[c]));
+function hl(t){
+  if(!q)return esc(t);
+  const w=q.split(/\s+/).filter(Boolean).map(x=>x.replace(/[.*+?^${}()|[\]\\]/g,"\\$&"));
+  return w.length?esc(t).replace(new RegExp("("+w.join("|")+")","ig"),"<mark>$1</mark>"):esc(t);
+}
+function prettyNote(n){
+  return n.replace(/(\d{4})-(\d{2})-(\d{2})/g,(m,y,mo,d)=>{
+    const dt=new Date(+y,+mo-1,+d);
+    return `${WD[dt.getDay()]} ${dt.getDate()} ${MON[dt.getMonth()].slice(0,3)}`;});
+}
+const shown=()=>allItems().filter(i=>!off.has(i.course)&&(!q||
+  q.split(/\s+/).filter(Boolean).every(w=>
+    (i.title+" "+i.course+" "+i.kind).toLowerCase().includes(w))));
+function stats(){
+  const s=shown().filter(i=>!i.ghost&&!i.mine);
+  const n=k=>s.filter(i=>i.kind===k).length;
+  const today=new Date().toISOString().slice(0,10);
+  const next=s.find(i=>i.date>=today);
+  document.getElementById("stats").innerHTML=
+    `<div class="stat"><b>${s.length}</b><span>graded items</span></div>
+     <div class="stat"><b>${n("Exam")}</b><span>exams</span></div>
+     <div class="stat"><b>${n("OSCE")}</b><span>OSCEs</span></div>
+     <div class="stat"><b>${n("Quiz")+n("IRAT/TRAT")+n("Practice")}</b><span>quizzes</span></div>
+     <div class="stat"><b>&#9733; ${s.filter(i=>i.mode==="In class").length}</b><span>sat in class</span></div>`+
+    (next?`<div class="stat"><b>${(()=>{const d=pk(next.date);return d.getDate()+" "+MON[d.getMonth()].slice(0,3);})()}</b><span>next up</span></div>`:"");
+}
+function bar(){
+  const counts={};
+  for(const i of allItems()){ if(i.ghost) continue; counts[i.course]=(counts[i.course]||0)+1; }
+  const b=document.getElementById("bar");
+  b.innerHTML=Object.keys(counts).sort().map(c=>
+    `<button class="chip${off.has(c)?"":" on"}" style="--c:${COLOR[c]||"#556"}" data-c="${esc(c)}">
+       <span class="sw"></span>${esc(c)}<b>${counts[c]}</b></button>`).join("")+
+    `<span class="spacer"></span>
+     <span class="srch"><span class="mag">&#9906;</span>
+       <input type="search" id="q" placeholder="Search quizzes, exams, OSCEs…" value="${esc(q)}"></span>
+     <span class="seg"><button id="vcal" class="${view==='cal'?'on':''}">Calendar</button><button id="vlist" class="${view==='list'?'on':''}">List</button></span>
+     <button class="chip" id="addb">+ My event</button>
+     <button class="chip" id="prt">Print / PDF</button>
+     <button class="chip" id="mine" title="Back up or move your own events">&#8593;&#8595;</button>`;
+  b.querySelectorAll("[data-c]").forEach(el=>el.onclick=()=>{
+    const c=el.dataset.c; off.has(c)?off.delete(c):off.add(c); render();});
+  const inp=document.getElementById("q");
+  inp.oninput=e=>{q=e.target.value.trim().toLowerCase();render();inp.focus();};
+  document.getElementById("prt").onclick=()=>window.print();
+  document.getElementById("addb").onclick=()=>openForm();
+  document.getElementById("mine").onclick=()=>backup();
+  document.getElementById("vcal").onclick=()=>{view="cal";render();};
+  document.getElementById("vlist").onclick=()=>{view="list";render();};
+}
+function monthGrid(list){
+  const by={};
+  for(const i of list)(by[i.date]||=[]).push(i);
+  const months=[...new Set(list.map(i=>i.date.slice(0,7)))].sort();
+  const today=new Date().toISOString().slice(0,10);
+  const out=[];
+  for(const ym of months){
+    const [y,m]=ym.split("-").map(Number);
+    const first=new Date(y,m-1,1), last=new Date(y,m,0);
+    const start=new Date(y,m-1,1-first.getDay());
+    const cells=Math.ceil((last.getDate()+first.getDay())/7)*7;
+    const n=list.filter(i=>i.date.startsWith(ym)).length;
+    out.push(`<div class="mon"><h2>${MON[m-1]} ${y}</h2><span>${n} item${n===1?"":"s"}</span></div>
+      <div class="cal"><div class="cgrid">`+
+      WD.map(d=>`<div class="chd">${d}</div>`).join(""));
+    for(let k=0;k<cells;k++){
+      const d=new Date(start.getFullYear(),start.getMonth(),start.getDate()+k);
+      const ds=`${d.getFullYear()}-${String(d.getMonth()+1).padStart(2,"0")}-${String(d.getDate()).padStart(2,"0")}`;
+      const outm=d.getMonth()!==m-1;
+      const day=(by[ds]||[]).slice().sort((a,b)=>a.when.localeCompare(b.when));
+      out.push(`<div class="cell${outm?" out":""}${ds===today?" today":""}${day.length?" has":""}">
+        <div class="cnum">${d.getDate()}</div>`+
+        day.map(i=>{
+          const c=COLOR[i.course]||"#556";
+          const kc=i.kind.replace(/[^A-Za-z]/g,"");
+          return `<button class="ci ${kc}" style="--c:${c}" data-k="${esc(i.date+'|'+i.title)}">
+            <span class="cw">${esc(i.when.split("–")[0])}</span>
+            <span class="cn">${hl(i.title)}</span>
+            ${i.bring?`<span class="cbring">&#9679; bring</span>`:""}</button>`;}).join("")+
+        `</div>`);
+    }
+    out.push(`</div></div>`);
+  }
+  return out.join("");
+}
+function listView(s){
+  const out=[]; let cur="";
+  const today=new Date().toISOString().slice(0,10);
+  const soon=new Date(Date.now()+7*864e5).toISOString().slice(0,10);
+  for(const i of s){
+    const d=pk(i.date), key=d.getFullYear()+"-"+d.getMonth();
+    if(key!==cur){
+      cur=key;
+      const inMon=s.filter(x=>{const y=pk(x.date);
+        return y.getFullYear()===d.getFullYear()&&y.getMonth()===d.getMonth()&&!x.ghost;});
+      out.push(`<div class="mon"><h2>${MON[d.getMonth()]} ${d.getFullYear()}</h2>
+        <span>${inMon.length} item${inMon.length===1?"":"s"}</span></div>`);
+    }
+    const c=COLOR[i.course]||"#556", k=i.kind.replace(/[^A-Za-z]/g,""), star=i.mode==="In class";
+    if(i.mine){
+      out.push(`<div class="row" data-edit="${esc(i.id)}" style="cursor:pointer">
+        <div class="dt"><b>${d.getDate()}</b><i>${WD[d.getDay()]} ${MON[d.getMonth()].slice(0,3)}</i></div>
+        <div class="ti"><div class="name">${hl(i.title)}</div>
+          <div class="meta"><span class="pill" style="--c:${i.color||"#4d5765"}">My event</span>
+            ${i.note?`<span class="note">${esc(i.note)}</span>`:""}</div></div>
+        <div class="tm">${esc(i.when)}<i>tap to edit</i></div></div>`);
+      continue;
+    }
+    if(i.ghost){
+      out.push(`<div class="row ghost">
+        <div class="dt"><b>${d.getDate()}</b><i>${WD[d.getDay()]} ${MON[d.getMonth()].slice(0,3)}</i></div>
+        <div class="ti"><div class="name">${hl(i.title)}</div>
+          <div class="meta"><span class="pill" style="--c:${c}">${esc(i.course)}</span>
+            <span class="kind opensk">Opens</span>
+            <span class="note">${esc(prettyNote(i.note))}</span></div></div>
+        <div class="tm">${esc(i.when)}<i>opens</i></div></div>`);
+      continue;
+    }
+    out.push(`<div class="row${i.date>=today&&i.date<=soon?" soon":""}">
+      <div class="dt"><b>${d.getDate()}</b><i>${WD[d.getDay()]} ${MON[d.getMonth()].slice(0,3)}</i></div>
+      <div class="ti"><div class="name">${star?'<span class="star" title="Sat in class">★</span>':""}${hl(i.title)}</div>
+        <div class="meta"><span class="pill" style="--c:${c}">${esc(i.course)}</span>
+          <span class="kind ${k}">${esc(i.kind)}</span>
+          ${i.weight?`<span class="wt">${esc(i.weight)} of grade</span>`:""}
+          ${i.note?`<span class="note">${esc(prettyNote(i.note))}</span>`:""}</div>
+        ${i.bring&&i.bring.length?`<div class="brl"><b>${i.mode==="On NBME"?"Have ready":"Bring"}</b> ${i.bring.map(esc).join(" · ")}</div>`:""}
+      </div>
+      <div class="tm">${esc(i.when)}<i>${esc(i.mode)}</i></div></div>`);
+  }
+  return out.join("");
+}
+function render(){
+  bar(); stats();
+  const s=shown();
+  if(!s.length){ document.getElementById("list").innerHTML=
+    `<div class="empty">Nothing matches that filter.</div>`; return; }
+  if(view==="list"){ document.getElementById("list").innerHTML=listView(s); hook(); return; }
+  const byDay={};
+  for(const i of s)(byDay[i.date]||=[]).push(i);
+  const first=pk(s[0].date), last=pk(s[s.length-1].date);
+  const today=new Date().toISOString().slice(0,10);
+  const out=[];
+  let y=first.getFullYear(), mo=first.getMonth();
+  while(y<last.getFullYear()||(y===last.getFullYear()&&mo<=last.getMonth())){
+    const start=new Date(y,mo,1), end=new Date(y,mo+1,0);
+    const all=s.filter(i=>{const d=pk(i.date);return d.getFullYear()===y&&d.getMonth()===mo;});
+    const inMon=all.filter(i=>!i.ghost);
+    if(inMon.length){
+      out.push(`<section class="cal"><div class="mon"><h2>${MON[mo]} ${y}</h2>
+        <span>${inMon.length} graded item${inMon.length===1?"":"s"}</span></div>
+        <div class="grid">${WD.map(d=>`<div class="hd">${d}</div>`).join("")}`);
+      const lead=start.getDay(), cells=Math.ceil((end.getDate()+lead)/7)*7;
+      for(let n=0;n<cells;n++){
+        const d=new Date(y,mo,1-lead+n);
+        const key=d.getFullYear()+"-"+String(d.getMonth()+1).padStart(2,"0")+"-"+String(d.getDate()).padStart(2,"0");
+        const list=(d.getMonth()===mo)?(byDay[key]||[]):[];   // spill-over cells stay empty
+        out.push(`<div class="cell${d.getMonth()!==mo?" out":""}${key===today?" today":""}${list.length?" has":""}">
+          <div class="num">${d.getDate()}</div>
+          ${list.map(i=>{
+            const c=COLOR[i.course]||"#556";
+            const k=i.kind.replace(/[^A-Za-z]/g,"");
+            const star=i.mode==="In class";
+            if(i.mine) return `<div class="ev mine" style="--c:${i.color||"#4d5765"}" data-edit="${esc(i.id)}" title="Your event — click to edit">
+              <div class="t">${esc(i.when)} · mine</div>
+              <div class="n">${hl(i.title)}</div>
+              ${i.note?`<div class="no">${esc(i.note)}</div>`:""}</div>`;
+            if(i.ghost) return `<div class="ev opens" style="--c:${c}" title="opens ${esc(i.when)}">
+              <div class="t">${esc(i.when)} · opens</div>
+              <div class="n">${hl(i.title)}</div>
+              ${i.note?`<div class="no">${esc(prettyNote(i.note))}</div>`:""}</div>`;
+            return `<div class="ev ${k}${star?" sat":""}" style="--c:${c}">
+              <div class="t">${esc(i.when)} · ${esc(i.course.replace("Foundations","F").replace("Clinical ","Clin "))}</div>
+              <div class="n">${star?'<span class="star" title="Sat in class">★</span>':""}${hl(i.title)}</div>
+              ${i.weight?`<div class="w">${esc(i.weight)} of grade</div>`:""}
+              ${i.note?`<div class="no">${esc(prettyNote(i.note))}</div>`:""}
+              ${i.bring&&i.bring.length?`<div class="br"><b>${i.mode==="On NBME"?"Have ready":"Bring"}</b>${i.bring.map(x=>`<span>${esc(x)}</span>`).join("")}</div>`:""}
+            </div>`;}).join("")}
+        </div>`);
+      }
+      out.push(`</div></section>`);
+    }
+    mo++; if(mo>11){mo=0;y++;}
+  }
+  document.getElementById("list").innerHTML=out.join("");
+  hook();
+}
+function hook(){
+  document.querySelectorAll("[data-edit]").forEach(el=>
+    el.onclick=()=>openForm(MINE.find(m=>m.id===el.dataset.edit)));
+}
+let editing=null, pickC=MYCOLORS[0];
+const dlg=document.getElementById("dlg"), scrim=document.getElementById("scrim");
+function paint(){
+  document.getElementById("f-c").innerHTML=MYCOLORS.map(c=>
+    `<button class="swb${c===pickC?" on":""}" style="--c:${c}" data-col="${c}"></button>`).join("");
+  document.querySelectorAll("[data-col]").forEach(b=>b.onclick=()=>{pickC=b.dataset.col;paint();});
+}
+function openForm(item){
+  editing=item||null;
+  document.getElementById("dlgt").textContent=item?"Edit your event":"Add your own event";
+  document.getElementById("f-t").value=item?item.title:"";
+  document.getElementById("f-d").value=item?item.date:new Date().toISOString().slice(0,10);
+  document.getElementById("f-w").value=item?item.when:"";
+  document.getElementById("f-n").value=item&&item.note?item.note:"";
+  document.getElementById("f-del").hidden=!item;
+  pickC=item&&item.color?item.color:MYCOLORS[0]; paint();
+  dlg.classList.add("on"); scrim.classList.add("on");
+  document.getElementById("f-t").focus();
+}
+function closeForm(){dlg.classList.remove("on");scrim.classList.remove("on");}
+scrim.onclick=closeForm;
+document.getElementById("f-x").onclick=closeForm;
+document.getElementById("f-del").onclick=()=>{
+  if(editing){MINE=MINE.filter(m=>m.id!==editing.id);save();}
+  closeForm();render();};
+document.getElementById("f-s").onclick=()=>{
+  const t=document.getElementById("f-t").value.trim();
+  const d=document.getElementById("f-d").value;
+  if(!t||!d){alert("A name and a date are needed.");return;}
+  const rec={id:editing?editing.id:uid(),title:t,date:d,
+    when:document.getElementById("f-w").value.trim()||"all day",
+    note:document.getElementById("f-n").value.trim(),
+    color:pickC,kind:"Mine",mode:"Mine"};
+  if(editing) MINE=MINE.map(m=>m.id===editing.id?rec:m); else MINE.push(rec);
+  save(); closeForm(); render();};
+document.addEventListener("keydown",e=>{if(e.key==="Escape")closeForm();});
+
+/* move your own events between devices */
+function backup(){
+  if(!MINE.length&&!confirm("You have no events of your own yet. Load a backup file instead?")) return;
+  const go=MINE.length?confirm(`Save a backup of your ${MINE.length} event${MINE.length===1?"":"s"}?
+
+OK = download a backup
+Cancel = load one from a file`):false;
+  if(go){
+    const b=new Blob([JSON.stringify(MINE,null,1)],{type:"application/json"});
+    const a=document.createElement("a");
+    a.href=URL.createObjectURL(b); a.download="my-events.json"; a.click();
+    URL.revokeObjectURL(a.href); return;
+  }
+  const inp=document.createElement("input"); inp.type="file"; inp.accept=".json";
+  inp.onchange=async e=>{
+    try{
+      const add=JSON.parse(await e.target.files[0].text());
+      if(!Array.isArray(add)) throw new Error("not a backup file");
+      const have=new Set(MINE.map(m=>m.id));
+      MINE=MINE.concat(add.filter(m=>m&&m.id&&!have.has(m.id)));
+      save(); render();
+      alert(`Loaded ${add.length} event${add.length===1?"":"s"}.`);
+    }catch(err){alert("Couldn't read that file: "+err.message);}
+  };
+  inp.click();
+}
+probe(); loadMine(); if(!canSave) warn();
+paint(); render();
+</script>
+</body>
+</html>
