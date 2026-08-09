@@ -225,6 +225,18 @@ const MON=["January","February","March","April","May","June","July","August","Se
 const WD=["Sun","Mon","Tue","Wed","Thu","Fri","Sat"];
 let off=new Set(), q="", view="cal", openKey=null, MINE=[], canSave=true;
 const KEY="ms1-shared-exams-v1";
+let clock24=true;
+try{ const c=localStorage.getItem("ms1-clock"); if(c==="12") clock24=false; }catch(e){}
+/* rewrite any HH:MM inside a string, including ranges like 13:00–17:00 */
+var RETIME=new RegExp('([0-9]{1,2}):([0-9]{2})','g');
+/* rewrite every HH:MM in a string, ranges included */
+function T(t){
+  if(clock24||!t) return String(t);
+  return String(t).replace(RETIME,function(m,h,mi){
+    h=+h; var ap=h>=12?'pm':'am', hh=h%12||12;
+    return mi==='00' ? hh+ap : hh+':'+mi+ap;
+  });
+}
 const MYCOLORS=["#4d5765","#1c6f92","#5a7a34","#a8562f","#7a4a86","#b0483f","#2f7f8f"];
 function loadMine(){
   try{ const raw=localStorage.getItem(KEY); if(raw) MINE=JSON.parse(raw)||[]; }
@@ -250,7 +262,7 @@ function hl(t){
   return w.length?esc(t).replace(new RegExp("("+w.join("|")+")","ig"),"<mark>$1</mark>"):esc(t);
 }
 function prettyNote(n){
-  return n.replace(/(\d{4})-(\d{2})-(\d{2})/g,(m,y,mo,d)=>{
+  return T(n).replace(/(\d{4})-(\d{2})-(\d{2})/g,(m,y,mo,d)=>{
     const dt=new Date(+y,+mo-1,+d);
     return `${WD[dt.getDay()]} ${dt.getDate()} ${MON[dt.getMonth()].slice(0,3)}`;});
 }
@@ -281,6 +293,7 @@ function bar(){
      <span class="srch"><span class="mag">&#9906;</span>
        <input type="search" id="q" placeholder="Search quizzes, exams, OSCEs…" value="${esc(q)}"></span>
      <span class="seg"><button id="vcal" class="${view==='cal'?'on':''}">Calendar</button><button id="vlist" class="${view==='list'?'on':''}">List</button></span>
+     <span class="seg" id="clk"><button id="c24" class="${clock24?'on':''}">24h</button><button id="c12" class="${clock24?'':'on'}">12h</button></span>
      <button class="chip" id="addb">+ My event</button>
      <button class="chip" id="prt">Print / PDF</button>
      <button class="chip" id="mine" title="Back up or move your own events">&#8593;&#8595;</button>`;
@@ -289,6 +302,8 @@ function bar(){
   const inp=document.getElementById("q");
   inp.oninput=e=>{q=e.target.value.trim().toLowerCase();render();inp.focus();};
   document.getElementById("prt").onclick=()=>window.print();
+  document.getElementById("c24").onclick=()=>setClock(true);
+  document.getElementById("c12").onclick=()=>setClock(false);
   document.getElementById("addb").onclick=()=>openForm();
   document.getElementById("mine").onclick=()=>backup();
   document.getElementById("vcal").onclick=()=>{view="cal";render();};
@@ -320,7 +335,7 @@ function monthGrid(list){
           const c=COLOR[i.course]||"#556";
           const kc=i.kind.replace(/[^A-Za-z]/g,"");
           return `<button class="ci ${kc}" style="--c:${c}" data-k="${esc(i.date+'|'+i.title)}">
-            <span class="cw">${esc(i.when.split("–")[0])}</span>
+            <span class="cw">${esc(T(i.when.split("–")[0]))}</span>
             <span class="cn">${hl(i.title)}</span>
             ${i.bring?`<span class="cbring">&#9679; bring</span>`:""}</button>`;}).join("")+
         `</div>`);
@@ -349,7 +364,7 @@ function listView(s){
         <div class="ti"><div class="name">${hl(i.title)}</div>
           <div class="meta"><span class="pill" style="--c:${i.color||"#4d5765"}">My event</span>
             ${i.note?`<span class="note">${esc(i.note)}</span>`:""}</div></div>
-        <div class="tm">${esc(i.when)}<i>tap to edit</i></div></div>`);
+        <div class="tm">${esc(T(i.when))}<i>tap to edit</i></div></div>`);
       continue;
     }
     if(i.ghost){
@@ -359,7 +374,7 @@ function listView(s){
           <div class="meta"><span class="pill" style="--c:${c}">${esc(i.course)}</span>
             <span class="kind opensk">Opens</span>
             <span class="note">${esc(prettyNote(i.note))}</span></div></div>
-        <div class="tm">${esc(i.when)}<i>opens</i></div></div>`);
+        <div class="tm">${esc(T(i.when))}<i>opens</i></div></div>`);
       continue;
     }
     out.push(`<div class="row${i.date>=today&&i.date<=soon?" soon":""}">
@@ -371,7 +386,7 @@ function listView(s){
           ${i.note?`<span class="note">${esc(prettyNote(i.note))}</span>`:""}</div>
         ${i.bring&&i.bring.length?`<div class="brl"><b>${i.mode==="On NBME"?"Have ready":"Bring"}</b> ${i.bring.map(esc).join(" · ")}</div>`:""}
       </div>
-      <div class="tm">${esc(i.when)}<i>${esc(i.mode)}</i></div></div>`);
+      <div class="tm">${esc(T(i.when))}<i>${esc(i.mode)}</i></div></div>`);
   }
   return out.join("");
 }
@@ -407,15 +422,15 @@ function render(){
             const k=i.kind.replace(/[^A-Za-z]/g,"");
             const star=i.mode==="In class";
             if(i.mine) return `<div class="ev mine" style="--c:${i.color||"#4d5765"}" data-edit="${esc(i.id)}" title="Your event — click to edit">
-              <div class="t">${esc(i.when)} · mine</div>
+              <div class="t">${esc(T(i.when))} · mine</div>
               <div class="n">${hl(i.title)}</div>
               ${i.note?`<div class="no">${esc(i.note)}</div>`:""}</div>`;
-            if(i.ghost) return `<div class="ev opens" style="--c:${c}" title="opens ${esc(i.when)}">
-              <div class="t">${esc(i.when)} · opens</div>
+            if(i.ghost) return `<div class="ev opens" style="--c:${c}" title="opens ${esc(T(i.when))}">
+              <div class="t">${esc(T(i.when))} · opens</div>
               <div class="n">${hl(i.title)}</div>
               ${i.note?`<div class="no">${esc(prettyNote(i.note))}</div>`:""}</div>`;
             return `<div class="ev ${k}${star?" sat":""}" style="--c:${c}">
-              <div class="t">${esc(i.when)} · ${esc(i.course.replace("Foundations","F").replace("Clinical ","Clin "))}</div>
+              <div class="t">${esc(T(i.when))} · ${esc(i.course.replace("Foundations","F").replace("Clinical ","Clin "))}</div>
               <div class="n">${star?'<span class="star" title="Sat in class">★</span>':""}${hl(i.title)}</div>
               ${i.weight?`<div class="w">${esc(i.weight)} of grade</div>`:""}
               ${i.note?`<div class="no">${esc(prettyNote(i.note))}</div>`:""}
@@ -440,6 +455,11 @@ function paint(){
   document.getElementById("f-c").innerHTML=MYCOLORS.map(c=>
     `<button class="swb${c===pickC?" on":""}" style="--c:${c}" data-col="${c}"></button>`).join("");
   document.querySelectorAll("[data-col]").forEach(b=>b.onclick=()=>{pickC=b.dataset.col;paint();});
+}
+function setClock(v){
+  clock24=v;
+  try{ localStorage.setItem("ms1-clock",v?"24":"12"); }catch(e){}
+  render();
 }
 function openForm(item){
   editing=item||null;
