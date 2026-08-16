@@ -142,6 +142,37 @@ button{font:inherit;cursor:pointer}
 .wkey .k.mand{text-decoration:underline;text-underline-offset:2px}
 .wkey .k.flip{font-weight:800}
 .wknone{padding:40px 18px;text-align:center;color:var(--muted)}
+/* ── crossing things off ─────────────────────────────────────────────── */
+.ck{flex:0 0 auto;width:17px;height:17px;border:1.6px solid #b9c3d1;border-radius:5px;
+ background:#fff;cursor:pointer;padding:0;line-height:1;position:relative}
+.ck:hover{border-color:#7d8b9d;background:#f4f7fb}
+.ck::after{content:"";position:absolute;left:4.5px;top:1px;width:5px;height:9px;
+ border:solid #fff;border-width:0 2px 2px 0;transform:rotate(42deg);opacity:0}
+.ck.on{background:#3d7031;border-color:#3d7031}
+.ck.on::after{opacity:1}
+.row .ck{margin-top:1px}
+.row .ti{display:flex;gap:10px;align-items:flex-start}
+.row .ti > .tx{min-width:0;flex:1}
+.row.done{background:#fafbfc}
+.row.done .ti .name{text-decoration:line-through;text-decoration-thickness:1.5px;color:var(--muted);font-weight:500}
+.row.done .meta,.row.done .tm,.row.done .brl{opacity:.55}
+.row.done.soon{background:#fafbfc}
+.evck{position:absolute;top:5px;right:5px;width:15px;height:15px;border-radius:4px;
+ border:1.5px solid color-mix(in srgb,var(--c) 40%,#fff);background:#fff;cursor:pointer;
+ padding:0;opacity:.55;z-index:3}
+.evck::after{content:"";position:absolute;left:3.5px;top:0.5px;width:4.5px;height:8px;
+ border:solid #fff;border-width:0 2px 2px 0;transform:rotate(42deg);opacity:0}
+.ev:hover .evck{opacity:1}
+.evck.on{background:#3d7031;border-color:#3d7031;opacity:1}
+.evck.on::after{opacity:1}
+.ev{position:relative}
+.ev.hasck .n{padding-right:16px}
+.ev.done{opacity:.5}
+.ev.done .n{text-decoration:line-through;text-decoration-thickness:1.4px}
+.donebar{font-family:"IBM Plex Mono",monospace;font-size:10.5px;letter-spacing:.04em;
+ color:var(--muted);padding:0 18px 10px}
+@media print{.ck,.evck{display:none}}
+
 /* events render as compact agenda rows, never as slivers */
 .wkev.evt{padding:2px 4px}
 .wkev.evt .wt{font-size:8px;opacity:.85}
@@ -340,7 +371,7 @@ footer{margin-top:14px;color:var(--muted);font-size:11.5px;line-height:1.6}
   <div class="sub">HWCOM Class of 2030 &middot; every graded quiz, exam, OSCE and submission for the year.<br>
     Built from the Canvas .ics, syllabi and Claude.<br><br>
     <b style="color:#ff8f9f">&#9733;</b> marks anything sat in person &mdash; IRAT/TRATs, in-class quizzes, exams and OSCEs.<br><br>
-    Everything unstarred is submitted on CanvasMed &mdash; including the written assignments, homework and survey submissions, alongside the quizzes.<br>
+    Everything unstarred is submitted on CanvasMed &mdash; including the written assignments, homework and survey submissions, alongside the quizzes. Tick those off as you submit them; the starred in-person sittings have no tick box.<br>
     Dotted boxes mark the day a quiz <b>opens</b> on CanvasMed — the solid box is the deadline.<br><br>The <b>Class schedule</b> tab is the week-by-week timetable: pick your small-group college at the top, mandatory sittings are <span style="text-decoration:underline">underlined</span> and flipped/team sessions are <b>bold</b>. Hover a class for its faculty, prep material and learning objectives; click it to expand the block in place. <b>School events</b> layers on clubs, service, wellbeing and career sessions in amber — save the ones you want with the star on their card, then switch the toggle to <b>★ Saved</b> to see only those, or <b>None</b> for a clean timetable. <b>+ My event</b> adds your own to that week; those are separate from the <b>+ My deadline</b> items on the assignments calendar.</div>
   <div class="stats" id="stats"></div>
 </header>
@@ -373,7 +404,7 @@ footer{margin-top:14px;color:var(--muted);font-size:11.5px;line-height:1.6}
   <div id="cardbody"></div>
 </div>
 <footer>
-  <b>Version 15 August 2026.</b> This at a web address, refresh for the latest — I will update periodically when Canvas changes.
+  <b>Version 16 August 2026.</b> This at a web address, refresh for the latest — I will update periodically when Canvas changes.
   Times are Eastern. Canvas is the source of truth, check it before relying on any dates here.
   Foundations II schedule has not been released yet.
 </footer>
@@ -536,12 +567,27 @@ const CATCOL={"Student life":"#b07d05","Service":"#8a6a10","Wellbeing":"#96761a"
 /* Two separate personal lists. Deadlines belong to the Assignments tab and
    sit alongside coursework; events belong to the Class schedule and sit in
    the amber layer. They never mix. */
-const EVKEY="ms1-my-events-v1", STARKEY="ms1-starred-v1";
+const EVKEY="ms1-my-events-v1", STARKEY="ms1-starred-v1", DONEKEY="ms1-done-v1";
 let MYEV=[], STARS=new Set();
 try{ const r=localStorage.getItem(EVKEY); if(r) MYEV=JSON.parse(r)||[]; }catch(e){}
 try{ const r=localStorage.getItem(STARKEY); if(r) STARS=new Set(JSON.parse(r)||[]); }catch(e){}
 function saveEv(){ try{ localStorage.setItem(EVKEY,JSON.stringify(MYEV)); }catch(e){ canSave=false; warn(); } }
 function saveStars(){ try{ localStorage.setItem(STARKEY,JSON.stringify([...STARS])); }catch(e){} }
+
+/* Ticking things off. Anything you sit in person — IRAT/TRATs, in-class
+   quizzes, OSCEs, exams, the starred items — can't be ticked: you either
+   turned up or you didn't, and a stale tick there would be misleading.
+   Everything you submit or complete yourself can. */
+let DONE=new Set();
+try{ const r=localStorage.getItem(DONEKEY); if(r) DONE=new Set(JSON.parse(r)||[]); }catch(e){}
+function saveDone(){ try{ localStorage.setItem(DONEKEY,JSON.stringify([...DONE])); }catch(e){} }
+const doneKey=i=>i.mine?("mine:"+i.id):[i.date,i.code,i.title,i.when].join("|");
+const canTick=i=>!i.ghost&&i.mode!=="In class";
+const isDone=i=>canTick(i)&&DONE.has(doneKey(i));
+function toggleDone(k){
+  DONE.has(k)?DONE.delete(k):DONE.add(k);
+  saveDone(); render();
+}
 const starKey=e=>e.date+"|"+(e.start||"")+"|"+e.title;
 const isStar=e=>STARS.has(starKey(e));
 
@@ -991,6 +1037,13 @@ function fitWeekEvents(){
     wn.style.webkitLineClamp=String(Math.max(1,Math.floor(avail/lh)));
   });
 }
+function doneBar(s){
+  const live=s.filter(i=>canTick(i)&&!i.mine);
+  const n=live.filter(isDone).length;
+  if(!live.length) return "";
+  return `<div class="donebar">${n} of ${live.length} submittable item${live.length===1?"":"s"} ticked off`+
+    `${n?` · <a href="#" id="clrdone" style="color:inherit">clear all ticks</a>`:""}</div>`;
+}
 function listView(s){
   const out=[]; let cur="";
   const today=dkey(new Date());
@@ -1006,34 +1059,39 @@ function listView(s){
     }
     const c=COLOR[i.course]||"#556", k=i.kind.replace(/[^A-Za-z]/g,""), star=i.mode==="In class";
     if(i.mine){
-      out.push(`<div class="row" data-edit="${esc(i.id)}" style="cursor:pointer">
+      out.push(`<div class="row${isDone(i)?" done":""}">
         <div class="dt"><b>${d.getDate()}</b><i>${WD[d.getDay()]} ${MON[d.getMonth()].slice(0,3)}</i></div>
-        <div class="ti"><div class="name">◆ ${hl(i.title)}</div>
-          <div class="meta"><span class="pill" style="--c:${i.color||"#4d5765"}">My deadline · not coursework</span>
-            ${i.loc?`<span class="note">${esc(i.loc)}</span>`:""}
-            ${i.note?`<span class="note">${esc(i.note)}</span>`:""}</div></div>
+        <div class="ti">
+          <button class="ck${isDone(i)?" on":""}" data-done="${esc(doneKey(i))}" title="${isDone(i)?"Done — click to undo":"Mark as done"}"></button>
+          <div class="tx" data-edit="${esc(i.id)}" style="cursor:pointer">
+            <div class="name">◆ ${hl(i.title)}</div>
+            <div class="meta"><span class="pill" style="--c:${i.color||"#4d5765"}">My deadline · not coursework</span>
+              ${i.loc?`<span class="note">${esc(i.loc)}</span>`:""}
+              ${i.note?`<span class="note">${esc(i.note)}</span>`:""}</div></div></div>
         <div class="tm">${esc(T(i.when))}<i>tap to edit</i></div></div>`);
       continue;
     }
     if(i.ghost){
       out.push(`<div class="row ghost">
         <div class="dt"><b>${d.getDate()}</b><i>${WD[d.getDay()]} ${MON[d.getMonth()].slice(0,3)}</i></div>
-        <div class="ti"><div class="name">${hl(i.title)}</div>
+        <div class="ti"><span class="ck" style="visibility:hidden"></span><div class="tx"><div class="name">${hl(i.title)}</div>
           <div class="meta"><span class="pill" style="--c:${c}">${esc(i.course)}</span>
             <span class="kind opensk">Opens</span>
-            <span class="note">${esc(prettyNote(i.note))}</span></div></div>
+            <span class="note">${esc(prettyNote(i.note))}</span></div></div></div>
         <div class="tm">${esc(T(i.when))}<i>opens</i></div></div>`);
       continue;
     }
-    out.push(`<div class="row${i.date>=today&&i.date<=soon?" soon":""}">
+    out.push(`<div class="row${i.date>=today&&i.date<=soon?" soon":""}${isDone(i)?" done":""}">
       <div class="dt"><b>${d.getDate()}</b><i>${WD[d.getDay()]} ${MON[d.getMonth()].slice(0,3)}</i></div>
-      <div class="ti"><div class="name">${star?'<span class="star" title="Sat in class">★</span>':""}${hl(i.title)}</div>
+      <div class="ti">
+        ${canTick(i)?`<button class="ck${isDone(i)?" on":""}" data-done="${esc(doneKey(i))}" title="${isDone(i)?"Done — click to undo":"Mark as done"}"></button>`:`<span class="ck" style="visibility:hidden"></span>`}
+        <div class="tx"><div class="name">${star?'<span class="star" title="Sat in class">★</span>':""}${hl(i.title)}</div>
         <div class="meta"><span class="pill" style="--c:${c}">${esc(i.course)}</span>
           <span class="kind ${k}">${esc(i.kind)}</span>
           ${i.weight?`<span class="wt">${esc(i.weight)} of grade</span>`:""}
           ${i.note?`<span class="note">${esc(prettyNote(i.note))}</span>`:""}</div>
         ${i.bring&&i.bring.length?`<div class="brl"><b>${i.mode==="On NBME"?"Have ready":"Bring"}</b> ${i.bring.map(esc).join(" · ")}</div>`:""}
-      </div>
+      </div></div>
       <div class="tm">${esc(T(i.when))}<i>${esc(i.mode)}</i></div></div>`);
   }
   return out.join("");
@@ -1061,7 +1119,7 @@ function render(){
   const s=shown();
   if(!s.length){ document.getElementById("list").innerHTML=
     `<div class="empty">Nothing matches that filter.</div>`; return; }
-  if(view==="list"){ document.getElementById("list").innerHTML=listView(s); hook(); return; }
+  if(view==="list"){ document.getElementById("list").innerHTML=listView(s)+doneBar(s); hook(); return; }
   const byDay={};
   for(const i of s)(byDay[i.date]||=[]).push(i);
   const first=pk(s[0].date), last=pk(s[s.length-1].date);
@@ -1098,7 +1156,8 @@ function render(){
         const c=COLOR[i.course]||"#556";
         const k=i.kind.replace(/[^A-Za-z]/g,"");
         const star=i.mode==="In class";
-        if(i.mine) return `<div class="ev mine" style="--c:${i.color||"#4d5765"}" data-edit="${esc(i.id)}" title="My deadline — not coursework. Click to edit.">
+        if(i.mine) return `<div class="ev mine hasck${isDone(i)?" done":""}" style="--c:${i.color||"#4d5765"}" data-edit="${esc(i.id)}" title="My deadline — not coursework. Click to edit.">
+          <button class="evck${isDone(i)?" on":""}" data-done="${esc(doneKey(i))}" title="${isDone(i)?"Done — click to undo":"Mark as done"}"></button>
           <div class="t">${esc(T(i.when))} · <span class="pinlab">yours</span></div>
           <div class="n">${hl(i.title)}</div>
           ${i.loc?`<div class="no">${esc(i.loc)}</div>`:""}
@@ -1107,7 +1166,8 @@ function render(){
           <div class="t">${esc(T(i.when))} · opens</div>
           <div class="n">${hl(i.title)}</div>
           ${i.note?`<div class="no">${esc(prettyNote(i.note))}</div>`:""}</div>`;
-        return `<div class="ev ${k}${star?" sat":""}" style="--c:${c}">
+        return `<div class="ev ${k}${star?" sat":""}${canTick(i)?" hasck":""}${isDone(i)?" done":""}" style="--c:${c}">
+          ${canTick(i)?`<button class="evck${isDone(i)?" on":""}" data-done="${esc(doneKey(i))}" title="${isDone(i)?"Done — click to undo":"Mark as done"}"></button>`:""}
           <div class="t">${esc(T(i.when))} · ${esc(i.course.replace("Foundations","F").replace("Clinical ","Clin "))}</div>
           <div class="n">${star?'<span class="star" title="Sat in class">★</span>':""}${hl(i.title)}</div>
           ${i.weight?`<div class="w">${esc(i.weight)} of grade</div>`:""}
@@ -1117,7 +1177,7 @@ function render(){
     </div>`;
   }
   h+=`</div></section>`;
-  document.getElementById("list").innerHTML=h;
+  document.getElementById("list").innerHTML=h+doneBar(s);
   const g=(id,fn)=>{const el=document.getElementById(id); if(el) el.onclick=fn;};
   g("cprev",()=>{calCursor=new Date(calCursor.getFullYear(),calCursor.getMonth()-1,1);render();});
   g("cnext",()=>{calCursor=new Date(calCursor.getFullYear(),calCursor.getMonth()+1,1);render();});
@@ -1127,6 +1187,11 @@ function render(){
 function hook(){
   document.querySelectorAll("[data-edit]").forEach(el=>
     el.onclick=()=>openForm(MINE.find(m=>m.id===el.dataset.edit)));
+  document.querySelectorAll("[data-done]").forEach(el=>
+    el.onclick=e=>{ e.stopPropagation(); toggleDone(el.dataset.done); });
+  const cd=document.getElementById("clrdone");
+  if(cd) cd.onclick=e=>{ e.preventDefault();
+    if(confirm("Clear every tick? This can't be undone.")){ DONE=new Set(); saveDone(); render(); } };
 }
 let editing=null, formKind="deadline", pickC=MYCOLORS[0];
 const dlg=document.getElementById("dlg"), scrim=document.getElementById("scrim");
@@ -1200,7 +1265,7 @@ function backup(){
 OK = download a backup
 Cancel = load one from a file`):false;
   if(go){
-    const b=new Blob([JSON.stringify({deadlines:MINE,events:MYEV,starred:[...STARS]},null,1)],
+    const b=new Blob([JSON.stringify({deadlines:MINE,events:MYEV,starred:[...STARS],done:[...DONE]},null,1)],
       {type:"application/json"});
     const a=document.createElement("a");
     a.href=URL.createObjectURL(b); a.download="my-events.json"; a.click();
@@ -1218,7 +1283,8 @@ Cancel = load one from a file`):false;
       const n0=MINE.length+MYEV.length;
       MINE=merge(MINE,box.deadlines); MYEV=merge(MYEV,box.events);
       for(const k of box.starred||[]) STARS.add(k);
-      save(); saveEv(); saveStars(); render();
+      for(const k of box.done||[]) DONE.add(k);
+      save(); saveEv(); saveStars(); saveDone(); render();
       alert(`Loaded ${MINE.length+MYEV.length-n0} item${MINE.length+MYEV.length-n0===1?"":"s"}.`);
     }catch(err){alert("Couldn't read that file: "+err.message);}
   };
