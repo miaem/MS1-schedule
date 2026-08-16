@@ -439,7 +439,7 @@ const shown=()=>allItems().sort(byDate).filter(i=>!off.has(i.course)&&(!q||
 function stats(){
   const s=shown().filter(i=>!i.ghost&&!i.mine);
   const n=k=>s.filter(i=>i.kind===k).length;
-  const today=new Date().toISOString().slice(0,10);
+  const today=dkey(new Date());
   const next=s.find(i=>i.date>=today);
   document.getElementById("stats").innerHTML=
     `<div class="stat"><b>${s.length}</b><span>graded items</span></div>
@@ -993,8 +993,8 @@ function fitWeekEvents(){
 }
 function listView(s){
   const out=[]; let cur="";
-  const today=new Date().toISOString().slice(0,10);
-  const soon=new Date(Date.now()+7*864e5).toISOString().slice(0,10);
+  const today=dkey(new Date());
+  const soon=dkey(new Date(Date.now()+7*864e5));
   for(const i of s){
     const d=pk(i.date), key=d.getFullYear()+"-"+d.getMonth();
     if(key!==cur){
@@ -1074,7 +1074,7 @@ function render(){
   if(calCursor<firstM) calCursor=firstM;
   if(calCursor>lastM) calCursor=lastM;
 
-  const today=new Date().toISOString().slice(0,10);
+  const today=dkey(new Date());
   const y=calCursor.getFullYear(), mo=calCursor.getMonth();
   const start=new Date(y,mo,1), end=new Date(y,mo+1,0);
   const inMon=s.filter(i=>{const d=pk(i.date);return d.getFullYear()===y&&d.getMonth()===mo&&!i.ghost;});
@@ -1149,7 +1149,7 @@ function openForm(item,presetDate,kind){
     ? "Only you can see this. It sits with the school events on the class schedule, not with your coursework."
     : "Only you can see this. It sits with your coursework on the assignments calendar.";
   document.getElementById("f-t").value=item?item.title:"";
-  document.getElementById("f-d").value=item?item.date:(presetDate||new Date().toISOString().slice(0,10));
+  document.getElementById("f-d").value=item?item.date:(presetDate||dkey(new Date()));
   const parts=item?mineWhen(item):null;
   document.getElementById("f-w").value=item?(parts?parts.start:item.when):"";
   document.getElementById("f-w2").value=parts?parts.end:"";
