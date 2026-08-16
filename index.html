@@ -17,7 +17,23 @@ body{margin:0;background:var(--page);color:var(--ink);font-family:"Inter Tight",
 .warnbar{max-width:120ch}
 header{background:var(--deep);color:#fff;border-radius:14px 14px 0 0;padding:22px 22px 18px}
 h1{font-family:"Bricolage Grotesque",sans-serif;font-weight:800;font-size:27px;margin:0;letter-spacing:-.02em}
-.sub{color:#8e9bb0;font-size:13px;margin-top:6px;line-height:1.5}
+/* the opening three lines carry the most weight */
+.lede{color:#dbe3ee;font-size:16px;line-height:1.55;margin:9px 0 0;max-width:74ch;font-weight:450}
+.lede b{color:#fff;font-weight:700}
+.lede .warnline{color:#ffc2cb}
+.lede .warnline b{color:#ffd9df}
+/* the how-to-use notes, boxed off from the description above */
+.guide{display:grid;grid-template-columns:repeat(auto-fit,minmax(330px,1fr));gap:11px;margin-top:16px}
+.gcard{background:rgba(255,255,255,.045);border:1px solid rgba(255,255,255,.09);
+ border-left:3px solid var(--a);border-radius:10px;padding:12px 15px 13px}
+.gcard h3{margin:0 0 8px;font-family:"IBM Plex Mono",monospace;font-size:10px;font-weight:600;
+ letter-spacing:.15em;text-transform:uppercase;color:var(--a)}
+.gcard ul{margin:0;padding-left:15px;color:#a9b6c8;font-size:12.5px;line-height:1.55}
+.gcard li{margin-bottom:6px}
+.gcard li:last-child{margin-bottom:0}
+.gcard b{color:#e4eaf3;font-weight:600}
+.gcard .star{color:#ff8f9f}
+.gcard .u{text-decoration:underline;text-underline-offset:2px}
 .stats{display:flex;flex-wrap:wrap;gap:8px;margin-top:16px}
 .stat{background:rgba(255,255,255,.08);border:1px solid rgba(255,255,255,.13);border-radius:9px;padding:7px 12px}
 .stat b{font-family:"Bricolage Grotesque",sans-serif;font-size:17px;display:block}
@@ -351,13 +367,19 @@ footer{margin-top:14px;color:var(--muted);font-size:11.5px;line-height:1.6}
  .bar{padding:10px 12px;position:static}
  .wrap{padding:12px 12px 50px}
  h1{font-size:21px}
+ .lede{font-size:14.5px}
+ .guide{grid-template-columns:1fr;gap:9px}
+ .gcard{padding:11px 13px}
 }
 @media print{
  body{background:#fff}
  .bar,.stats,.dlg,.scrim,.warnbar,.wkbar{display:none}
  .wkcol,.wkev{break-inside:avoid}
  header{background:#fff;color:#000;border-bottom:2px solid #000;border-radius:0}
- .sub{color:#555}
+ .lede{color:#333}
+ .lede{font-size:13px}
+ .gcard{background:#fff;border-color:#bbb;border-left-color:#333}
+ .gcard h3,.gcard ul,.gcard b{color:#333}
  .body{box-shadow:none}
  .cell,.cal{break-inside:avoid}
  .mon h2{break-after:avoid}
@@ -368,12 +390,31 @@ footer{margin-top:14px;color:var(--muted);font-size:11.5px;line-height:1.6}
 <div class="wrap">
 <header>
   <h1>MS1 Exams &amp; Assignments</h1>
-  <div class="sub">HWCOM Class of 2030 &middot; every graded quiz, exam, OSCE and submission for the year.<br>
+
+  <p class="lede">HWCOM Class of 2030 &middot; every graded quiz, exam, OSCE and submission for the year.<br>
     Built from the Canvas .ics, syllabi and Claude.<br>
-    Canvas is most accurate and is the source of truth; this may not be 100% accurate. <br><br>
-    <b style="color:#ff8f9f">&#9733;</b> marks anything sat in person &mdash; IRAT/TRATs, in-class quizzes, exams and OSCEs.<br><br>
-    Everything unstarred is submitted on CanvasMed &mdash; including the written assignments, homework and survey submissions, alongside the quizzes. Tick those off as you submit them; the starred in-person sittings have no tick box.<br>
-    Dotted boxes mark the day a quiz <b>opens</b> on CanvasMed — the solid box is the deadline.<br><br>The <b>Class schedule</b> tab is the week-by-week timetable: pick your small-group college at the top, mandatory sittings are <span style="text-decoration:underline">underlined</span> and flipped/team sessions are <b>bold</b>. Hover a class for its faculty, prep material and learning objectives; click it to expand the block in place. <b>School events</b> layers on clubs, service, wellbeing and career sessions in amber — save the ones you want with the star on their card, then switch the toggle to <b>★ Saved</b> to see only those, or <b>None</b> for a clean timetable. <b>+ My event</b> adds your own to that week; those are separate from the <b>+ My deadline</b> items on the assignments calendar.</div>
+    <span class="warnline">Canvas is the source of truth &mdash; <b>this may not be 100% accurate.</b></span></p>
+
+  <div class="guide">
+    <div class="gcard" style="--a:#ff8f9f">
+      <h3>Reading this calendar</h3>
+      <ul>
+        <li><b class="star">&#9733;</b> marks anything sat in person &mdash; IRAT/TRATs, in-class quizzes, exams and OSCEs.</li>
+        <li>Everything unstarred is submitted on CanvasMed: written assignments, homework and survey submissions as well as quizzes. <b>Tick those off</b> as you submit them &mdash; the starred sittings have no tick box.</li>
+        <li>A <b>dotted box</b> marks the day a quiz opens; the <b>solid box</b> is the deadline.</li>
+      </ul>
+    </div>
+    <div class="gcard" style="--a:#e0b667">
+      <h3>Class schedule tab</h3>
+      <ul>
+        <li>Pick your small-group college at the top. Mandatory sittings are <span class="u">underlined</span>, flipped and team sessions are <b>bold</b>.</li>
+        <li>Hover a class for its faculty, prep material and learning objectives; click it to expand the block in place.</li>
+        <li><b>School events</b> layers on clubs, service, wellbeing and career sessions in amber. Star the ones you want on their card, then switch to <b>&#9733; Saved</b> for only those, or <b>None</b> for a clean timetable.</li>
+        <li><b>+ My event</b> adds your own to that week &mdash; separate from the <b>+ My deadline</b> items on the assignments calendar.</li>
+      </ul>
+    </div>
+  </div>
+
   <div class="stats" id="stats"></div>
 </header>
 <div class="bar" id="bar"></div>
