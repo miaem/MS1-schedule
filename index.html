@@ -185,6 +185,12 @@ button{font:inherit;cursor:pointer}
 .ev.hasck .n{padding-right:16px}
 .ev.done{opacity:.5}
 .ev.done .n{text-decoration:line-through;text-decoration-thickness:1.4px}
+.pastbar{display:flex;align-items:center;gap:10px;flex-wrap:wrap;padding:10px 18px;
+ border-bottom:1px solid var(--rule2);background:#f7f9fc;font-size:12px;color:var(--muted)}
+.pastbar button{border:1px solid var(--rule);background:#fff;border-radius:8px;
+ padding:5px 11px;font-size:12px;color:var(--ink2)}
+.pastbar button:hover{border-color:#b6c0cf}
+@media print{.pastbar{display:none}}
 .donebar{font-family:"IBM Plex Mono",monospace;font-size:10.5px;letter-spacing:.04em;
  color:var(--muted);padding:0 18px 10px}
 @media print{.ck,.evck{display:none}}
@@ -634,6 +640,11 @@ const starKey=e=>e.date+"|"+(e.start||"")+"|"+e.title;
 const isStar=e=>STARS.has(starKey(e));
 
 /* off = classes only · star = just the ones saved · all = everything */
+/* the list opens on the week you're in — earlier weeks are folded away
+   rather than dropped, since you may still want to look back */
+let hidePast=true;
+try{ hidePast=localStorage.getItem("ms1-hidepast")!=="0"; }catch(e){}
+
 let evMode="off";
 try{
   const v=localStorage.getItem("ms1-events");
@@ -1083,11 +1094,23 @@ function doneBar(s){
   const live=s.filter(i=>canTick(i)&&!i.mine);
   const n=live.filter(isDone).length;
   if(!live.length) return "";
-  return `<div class="donebar">${n} of ${live.length} submittable item${live.length===1?"":"s"} ticked off`+
+  return `<div class="donebar">${n} of ${live.length} submittable item${live.length===1?"":"s"} ticked off across the year`+
     `${n?` · <a href="#" id="clrdone" style="color:inherit">clear all ticks</a>`:""}</div>`;
 }
-function listView(s){
-  const out=[]; let cur="";
+function listView(all){
+  /* everything before this Sunday counts as a week gone by */
+  const cutoff=dkey(wkStart(new Date()));
+  const past=all.filter(i=>i.date<cutoff);
+  const s=hidePast?all.filter(i=>i.date>=cutoff):all;
+  let bar="";
+  if(past.length)
+    bar=`<div class="pastbar">
+      <span>${hidePast?`${past.length} item${past.length===1?"":"s"} from earlier weeks ${past.length===1?"is":"are"} hidden`
+                      :`Showing ${past.length} item${past.length===1?"":"s"} from earlier weeks`}</span>
+      <button id="pasttog">${hidePast?"Show earlier weeks":"Hide earlier weeks"}</button></div>`;
+  if(!s.length)
+    return bar+`<div class="empty">Nothing left this week or later.</div>`;
+  const out=[bar]; let cur="";
   const today=dkey(new Date());
   const soon=dkey(new Date(Date.now()+7*864e5));
   for(const i of s){
@@ -1231,6 +1254,10 @@ function hook(){
     el.onclick=()=>openForm(MINE.find(m=>m.id===el.dataset.edit)));
   document.querySelectorAll("[data-done]").forEach(el=>
     el.onclick=e=>{ e.stopPropagation(); toggleDone(el.dataset.done); });
+  { const pt=document.getElementById("pasttog");
+    if(pt) pt.onclick=()=>{ hidePast=!hidePast;
+      try{ localStorage.setItem("ms1-hidepast",hidePast?"1":"0"); }catch(e){}
+      render(); }; }
   const cd=document.getElementById("clrdone");
   if(cd) cd.onclick=e=>{ e.preventDefault();
     if(confirm("Clear every tick? This can't be undone.")){ DONE=new Set(); saveDone(); render(); } };
