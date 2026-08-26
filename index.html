@@ -443,10 +443,10 @@ footer{margin-top:14px;color:var(--muted);font-size:11.5px;line-height:1.6}
   <div class="f"><label for="f-t">What is it</label><input type="text" id="f-t" maxlength="90" placeholder="Study group, shift, flight home…"></div>
   <div class="two">
     <div class="f"><label for="f-d">Date</label><input type="date" id="f-d"></div>
-    <div class="f"><label for="f-w">Starts</label><input type="text" id="f-w" maxlength="16" placeholder="14:00 or all day"></div>
+    <div class="f"><label for="f-w">Starts</label><input type="text" id="f-w" maxlength="16" placeholder="14:00, 2pm, or all day"></div>
   </div>
   <div class="two">
-    <div class="f"><label for="f-w2">Ends (optional)</label><input type="text" id="f-w2" maxlength="8" placeholder="15:30"></div>
+    <div class="f"><label for="f-w2">Ends (optional)</label><input type="text" id="f-w2" maxlength="10" placeholder="15:30 or 3:30pm"></div>
     <div class="f"><label for="f-l">Where (optional)</label><input type="text" id="f-l" maxlength="60" placeholder="AHC2 170, home, Zoom…"></div>
   </div>
   <div class="f"><label for="f-n">Note (optional)</label><input type="text" id="f-n" maxlength="90"></div>
@@ -669,13 +669,27 @@ let WKMAP=[];
 
 /* a personal event only lands on the grid if it carries a time; "all day"
    ones ride in the all-day strip instead */
+function parseClock(s){
+  s=String(s||"").trim().toLowerCase().replace(/[.\s]/g,"");
+  let m=s.match(/^(\d{1,2})(?::(\d{2}))?(am|pm|a|p)$/);
+  if(m){ let h=+m[1]; if(h<1||h>12) return null; h%=12;
+    if(m[3][0]==="p") h+=12;
+    const mi=m[2]||"00"; if(+mi>59) return null;
+    return String(h).padStart(2,"0")+":"+mi; }
+  m=s.match(/^(\d{1,2}):(\d{2})$/);
+  if(m&&+m[1]<24&&+m[2]<60) return String(+m[1]).padStart(2,"0")+":"+m[2];
+  return null;
+}
 function mineWhen(m){
   const s=String(m.when||"").trim();
-  let x=s.match(/^(\d{1,2}):(\d{2})\s*[–—-]\s*(\d{1,2}):(\d{2})$/);
-  if(x) return {start:x[1].padStart(2,"0")+":"+x[2], end:x[3].padStart(2,"0")+":"+x[4]};
-  x=s.match(/^(\d{1,2}):(\d{2})$/);
-  if(x){ const h=+x[1], mi=+x[2], e=new Date(2000,0,1,h,mi+60);
-    return {start:String(h).padStart(2,"0")+":"+x[2],
+  const x=s.split(/\s*[–—-]\s*/);
+  if(x.length===2){
+    const a=parseClock(x[0]), b=parseClock(x[1]);
+    if(a&&b) return {start:a,end:b};
+  }
+  const a=parseClock(s);
+  if(a){ const e=new Date(2000,0,1,+a.slice(0,2),+a.slice(3)+60);
+    return {start:a,
             end:String(e.getHours()).padStart(2,"0")+":"+String(e.getMinutes()).padStart(2,"0")}; }
   return null;
 }
@@ -971,7 +985,8 @@ function popHTML(rec){
 function popEventHTML(rec){
   const e=rec.e, d=rec.day, own=rec.kind==="mine";
   const col=own?(e.color||"#4d5765"):(CATCOL[e.cat]||"#b07d05");
-  const when=rec.start?`${T(rec.start)}–${T(rec.end)}`:(own?esc(e.when||"all day"):"All day");
+  const tw=rec.start?{start:rec.start,end:rec.end}:(own?mineWhen(e):null);
+  const when=tw?`${T(tw.start)}–${T(tw.end)}`:(own?esc(e.when||"all day"):"All day");
   let h=`<div class="ph" style="--c:${col}">
     <div class="pday">${WD[d.getDay()]} ${d.getDate()} ${MON[d.getMonth()]} ${d.getFullYear()} · ${when}</div>
     <h4>${esc(e.title)}</h4>
@@ -1322,8 +1337,9 @@ document.getElementById("f-s").onclick=()=>{
   if(!t||!d){alert("A name and a date are needed.");return;}
   const w1=document.getElementById("f-w").value.trim();
   const w2=document.getElementById("f-w2").value.trim();
-  let when=w1||"all day";
-  if(/^\d{1,2}:\d{2}$/.test(w1)&&/^\d{1,2}:\d{2}$/.test(w2)) when=w1+"–"+w2;
+  const c1=parseClock(w1), c2=parseClock(w2);
+  let when=c1||w1||"all day";
+  if(c1&&c2) when=c1+"–"+c2;
   const rec={id:editing?editing.id:uid(),title:t,date:d,when,
     loc:document.getElementById("f-l").value.trim(),
     note:document.getElementById("f-n").value.trim(),
