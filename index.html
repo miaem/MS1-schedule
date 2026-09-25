@@ -492,7 +492,7 @@ footer{margin-top:14px;color:var(--muted);font-size:11.5px;line-height:1.6}
 </div>
 <footer>
   <b>Version 23 September 2026.</b> Checked against the CanvasMed export of 23 September 2026, the BMS 6000, BMS 6001, BMS 6041 and BMS 6015A syllabi, the BMS 6042 Course Outline page, the BMS 6001 syllabus (OME approved 19 Aug) and and the OME forecast schedule of 1 September 2026.
-  Times are Eastern. Canvas is the source of truth, check it before relying on any dates here.
+  Times are shown in your device's timezone; campus is Eastern. Canvas is the source of truth, check it before relying on any dates here.
   <b>Foundations II (BMS 6041) is not published on CanvasMed yet</b> &mdash; its four unit exams below come from the forecast schedule and are marked as such. Foundations II quizzes, IRAT/TRATs and readiness quizzes have not been published anywhere yet. OSCEs and formative SP encounters run over two afternoons in 25-minute slots; pick yours from the assignment row or the class-schedule block and the other day disappears. Your pick is saved in this browser only. <b>BMS 6015A Primary Care Preceptorship</b> runs 7 Sep 2026 – 20 Apr 2027, is graded pass/fail and is worth 10% of Clinical Skills I; its dates come from the syllabus, since the course has no calendar feed yet. <b>Foundations II is now fully published</b> — every session, room and assessment below comes from CanvasMed, with weights and quiz close times from the syllabus. Where the syllabus grading table and Canvas disagree on a date, Canvas is used and the card says so. Organ Systems I &amp; II and the MDR 7910 deadlines are still forecast-only with no times beyond AM/PM; Profession of Medicine I and Community Engaged Physician I have no dates at all.
 </footer>
 </div>
@@ -668,14 +668,14 @@ function saveStars(){ try{ localStorage.setItem(STARKEY,JSON.stringify([...STARS
 let DONE=new Set();
 try{ const r=localStorage.getItem(DONEKEY); if(r) DONE=new Set(JSON.parse(r)||[]); }catch(e){}
 function saveDone(){ try{ localStorage.setItem(DONEKEY,JSON.stringify([...DONE])); }catch(e){} }
-const doneKey=i=>i.mine?("mine:"+i.id):(i.sit?("sit:"+i.sit):[i.date,i.code,i.title,i.when].join("|"));
+const doneKey=i=>i.mine?("mine:"+i.id):(i.sit?("sit:"+i.sit):[i.edate||i.date,i.code,i.title,i.ewhen||i.when].join("|"));
 const canTick=i=>!i.ghost&&i.mode!=="In class";
 const isDone=i=>canTick(i)&&DONE.has(doneKey(i));
 function toggleDone(k){
   DONE.has(k)?DONE.delete(k):DONE.add(k);
   saveDone(); render();
 }
-const starKey=e=>e.date+"|"+(e.start||"")+"|"+e.title;
+const starKey=e=>(e.edate||e.date)+"|"+(e.estart||e.start||"")+"|"+e.title;
 const isStar=e=>STARS.has(starKey(e));
 
 /* off = classes only · star = just the ones saved · all = everything */
@@ -694,14 +694,87 @@ try{
    Each of these runs over two afternoons and you sit on one of them, in one
    25-minute slot. Until a slot is chosen the whole window is shown; once it
    is, the other day drops out of both views entirely.                      */
+const SCHOOL_TZ="America/New_York";
+const P2=n=>String(n).padStart(2,"0");
+const normT=t=>{const m=String(t).match(/^(\d{1,2}):(\d{2})$/);return m?P2(+m[1])+":"+m[2]:null;};
+function tzOffset(ts){
+  const f=new Intl.DateTimeFormat("en-US",{timeZone:SCHOOL_TZ,hour12:false,
+    year:"numeric",month:"2-digit",day:"2-digit",hour:"2-digit",minute:"2-digit",second:"2-digit"});
+  const p={};
+  for(const x of f.formatToParts(new Date(ts))) p[x.type]=x.value;
+  return Date.UTC(+p.year,+p.month-1,+p.day,(+p.hour)%24,+p.minute,+p.second)-ts;
+}
+function etLocal(dateStr,hhmm){
+  const t=normT(hhmm);
+  if(!t||!/^\d{4}-\d{2}-\d{2}$/.test(String(dateStr))) return {date:dateStr,time:hhmm};
+  const[y,mo,d]=dateStr.split("-").map(Number), [h,mi]=t.split(":").map(Number);
+  const guess=Date.UTC(y,mo-1,d,h,mi);
+  let ts=guess-tzOffset(guess);
+  ts=guess-tzOffset(ts);
+  const L=new Date(ts);
+  return {date:L.getFullYear()+"-"+P2(L.getMonth()+1)+"-"+P2(L.getDate()),
+          time:P2(L.getHours())+":"+P2(L.getMinutes())};
+}
+const TZSAME=(()=>{ try{
+    return ["2026-01-15","2026-07-15"].every(d=>etLocal(d,"12:00").time==="12:00");
+  }catch(e){ return true; } })();
+function convNote(note,edate){
+  if(!note) return note;
+  return String(note).replace(/(\d{4}-\d{2}-\d{2})[ T](\d{1,2}:\d{2})|(\d{1,2}:\d{2})/g,
+    (m,d,t1,t2)=>{
+      if(d){ const L=etLocal(d,t1); return L.date+" "+L.time; }
+      return etLocal(edate,t2).time;
+    });
+}
+function convRange(when,edate){
+  const s=String(when), parts=s.split(/([–—-])/);
+  if(parts.length===3&&normT(parts[0])&&normT(parts[2])){
+    const a=etLocal(edate,parts[0]), b=etLocal(edate,parts[2]);
+    return {date:a.date,when:a.time+parts[1]+b.time};
+  }
+  if(normT(s)){ const a=etLocal(edate,s); return {date:a.date,when:a.time}; }
+  return {date:edate,when:s};
+}
+function localizeData(){
+  if(TZSAME) return;
+  for(const c of CLASSES){
+    c.edate=c.date;
+    const a=etLocal(c.date,c.start), b=etLocal(c.date,c.end);
+    c.date=a.date; c.start=a.time; c.end=b.time;
+  }
+  for(const e of CAMPUS){
+    e.edate=e.date;
+    if(e.allday||!e.start) continue;
+    e.estart=e.start;
+    const a=etLocal(e.date,e.start), b=e.end?etLocal(e.date,e.end):null;
+    e.date=a.date; e.start=a.time; if(b) e.end=b.time;
+  }
+  for(const i of ITEMS){
+    i.edate=i.date; i.ewhen=i.when;
+    if(i.note) i.note=convNote(i.note,i.edate);
+    const r=convRange(i.when,i.edate);
+    i.date=r.date; i.when=r.when;
+  }
+}
+localizeData();
 const SLOTS=[["13:00","13:25"],["13:28","13:53"],["13:56","14:21"],["14:24","14:49"],
              ["14:49","15:09"],["15:12","15:37"],["15:40","16:05"],["16:08","16:33"],
              ["16:36","17:01"]];
 const SITDAYS={};
 for(const c of CLASSES){ if(!c.sit) continue;
-  (SITDAYS[c.sit]=SITDAYS[c.sit]||{title:c.title,loc:c.loc,dates:[]});
-  if(!SITDAYS[c.sit].dates.includes(c.date)) SITDAYS[c.sit].dates.push(c.date); }
+  (SITDAYS[c.sit]=SITDAYS[c.sit]||{title:c.title,loc:c.loc,dates:[],east:{}});
+  if(!SITDAYS[c.sit].dates.includes(c.date)) SITDAYS[c.sit].dates.push(c.date);
+  SITDAYS[c.sit].east[c.date]=c.edate||c.date; }
 for(const k in SITDAYS) SITDAYS[k].dates.sort();
+function eastOf(sit,localDate){
+  const S=SITDAYS[sit];
+  return (S&&S.east&&S.east[localDate])||localDate;
+}
+function slotTimes(sit,localDate,i){
+  const s=SLOTS[i]; if(!s) return null;
+  const e=eastOf(sit,localDate);
+  return [etLocal(e,s[0]).time,etLocal(e,s[1]).time];
+}
 let PICK={};
 try{ PICK=JSON.parse(localStorage.getItem("ms1-osce")||"{}")||{}; }catch(e){ PICK={}; }
 function savePick(){ try{ localStorage.setItem("ms1-osce",JSON.stringify(PICK)); }catch(e){} }
@@ -712,7 +785,7 @@ function sitCut(r){
   const p=PICK[r.sit];
   if(!p) return r;
   if(p.date!==r.date) return null;
-  const s=SLOTS[p.i]; if(!s) return r;
+  const s=slotTimes(r.sit,p.date,p.i); if(!s) return r;
   return Object.assign({},r,{start:s[0],end:s[1]});
 }
 function sitCutItem(i){
@@ -720,7 +793,7 @@ function sitCutItem(i){
   const p=PICK[i.sit];
   if(!p) return i;
   if(p.date!==i.date) return null;
-  const s=SLOTS[p.i]; if(!s) return i;
+  const s=slotTimes(i.sit,p.date,p.i); if(!s) return i;
   return Object.assign({},i,{when:s[0]+"–"+s[1]});
 }
 const ALLCLASS=CLASSES.concat(extraSittings()).sort((a,b)=>
@@ -999,7 +1072,7 @@ function weekView(){
    hover (or the "Full details" button on touch) opens a card with
    everything Canvas carries for that session: faculty, format, room,
    prep material and the full learning-objective list.                    */
-function infoFor(c){ return INFO[c.date+"|"+c.code+"|"+c.title]||null; }
+function infoFor(c){ return INFO[(c.edate||c.date)+"|"+c.code+"|"+c.title]||null; }
 let popEl=null, popOver=false, popTimer=null, popFor=null, objOpen=false;
 function popNode(){
   if(!popEl){
@@ -1395,9 +1468,10 @@ function paintPicker(){
   document.getElementById("odays").innerHTML=S.dates.map(k=>
     `<button data-d="${k}" class="${oDay===k?"on":""}"><b>${fmtDay(k)}</b>`
     +`${p&&p.date===k?"your day":"&nbsp;"}</button>`).join("");
-  document.getElementById("oslots").innerHTML=SLOTS.map((s,ix)=>
-    `<button data-s="${ix}" class="${p&&p.date===oDay&&p.i===ix?"on":""}"`
-    +`${oDay?"":" disabled"}>${T(s[0])}–${T(s[1])}</button>`).join("");
+  document.getElementById("oslots").innerHTML=SLOTS.map((s,ix)=>{
+    const lt=oDay?slotTimes(oSit,oDay,ix):s;
+    return `<button data-s="${ix}" class="${p&&p.date===oDay&&p.i===ix?"on":""}"`
+    +`${oDay?"":" disabled"}>${T(lt[0])}–${T(lt[1])}</button>`;}).join("");
   document.getElementById("odays").querySelectorAll("[data-d]").forEach(b=>
     b.onclick=()=>{ oDay=b.dataset.d; paintPicker(); });
   document.getElementById("oslots").querySelectorAll("[data-s]").forEach(b=>
@@ -1416,7 +1490,7 @@ document.getElementById("o-clr").onclick=()=>{
 document.addEventListener("keydown",e=>{ if(e.key==="Escape") closePicker(); });
 function slotLabel(sit){
   const p=PICK[sit]; if(!p) return "";
-  const s=SLOTS[p.i]; return fmtDay(p.date)+", "+T(s[0])+"–"+T(s[1]);
+  const s=slotTimes(sit,p.date,p.i)||SLOTS[p.i]; return fmtDay(p.date)+", "+T(s[0])+"–"+T(s[1]);
 }
 function openForm(item,presetDate,kind){
   editing=item||null;
