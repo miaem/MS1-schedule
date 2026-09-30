@@ -349,42 +349,6 @@ button{font:inherit;cursor:pointer}
 .swb{width:26px;height:26px;border-radius:7px;border:2px solid transparent;background:var(--c);padding:0;cursor:pointer}
 .swb.on{border-color:var(--ink);box-shadow:0 0 0 2px #fff inset}
 .acts{display:flex;gap:8px;align-items:center;margin-top:16px}
-.micbar{display:flex;align-items:center;gap:10px;flex-wrap:wrap;margin:0 0 14px;
-  padding:12px 14px;border:1px solid var(--rule);border-radius:12px;background:#fff}
-.micbar>button{width:34px;height:32px;border:1px solid var(--rule);border-radius:8px;
-  background:#fff;font:inherit;cursor:pointer}
-.micbar>button#mnow{width:auto;padding:0 12px}
-.micbar>button:disabled{opacity:.35;cursor:default}
-.miclab{flex:1;min-width:190px;line-height:1.35}
-.miclab b{display:block;font-size:15px}
-.miclab span{font-size:12px;color:var(--muted)}
-.micprog{min-width:190px;font-size:12px;color:var(--muted);line-height:1.5}
-.micbarline{height:6px;border-radius:99px;background:#e9ecf1;overflow:hidden;margin-bottom:4px}
-.micbarline i{display:block;height:100%;background:#0d857c;transition:width .18s}
-.miccourse{font-size:12.5px;color:var(--muted);line-height:1.6;margin:0 0 16px;padding:0 2px}
-.micsec{border:1px solid var(--rule);border-radius:12px;background:#fff;margin:0 0 12px;overflow:hidden}
-.michead{display:flex;align-items:baseline;gap:10px;justify-content:space-between;
-  padding:11px 14px;border-bottom:1px solid var(--rule);background:#fafbfc}
-.micdate{font-size:11.5px;color:var(--muted);margin-right:8px;white-space:nowrap}
-.mictitle{font-size:14px;font-weight:600}
-.miccount{font-size:11.5px;color:var(--muted);white-space:nowrap}
-.miccount.full{color:#0d857c;font-weight:600}
-.miclist{list-style:none;margin:0;padding:0}
-.microw{display:flex;align-items:center;gap:11px;padding:8px 14px;cursor:pointer;
-  border-bottom:1px solid #f2f4f7;font-size:13.5px}
-.microw:last-child{border-bottom:0}
-.microw:hover{background:#f7f9fb}
-.micck{flex:0 0 18px;height:18px;border:1.5px solid #c3cad4;border-radius:5px;
-  display:flex;align-items:center;justify-content:center;font-size:12px;color:#fff}
-.microw.on .micck{background:#0d857c;border-color:#0d857c}
-.microw.on .micname{color:var(--muted);text-decoration:line-through}
-.micname{flex:1}
-.micmin{font-size:11.5px;color:var(--muted);white-space:nowrap}
-.micnone{padding:12px 14px;font-size:13px;color:var(--muted)}
-.micact{padding:9px 14px;border-top:1px solid #f2f4f7;background:#fafbfc}
-.micall{border:1px solid var(--rule);border-radius:8px;background:#fff;font:inherit;
-  font-size:12px;padding:5px 10px;cursor:pointer}
-@media(max-width:560px){.michead{flex-direction:column;gap:3px}.micprog{width:100%}}
 .odays{display:flex;gap:8px;margin:0 0 14px}
 .odays button{flex:1;padding:9px 8px;border:1px solid var(--rule);border-radius:9px;
   background:#fff;font:inherit;font-size:13px;cursor:pointer;line-height:1.3}
@@ -556,12 +520,6 @@ const GROUPS=['Anderson','Semmelweis','Pasteur','Hippocrates'];
 const COLOR={"Foundations I": "#4756c9", "Foundations II": "#7c46b8", "Foundations III": "#0d857c", "Clinical Skills I": "#bd2c66", "Clinical Research": "#4a8429"}; COLOR["Road to Residency"]="#9a5b2d"; COLOR["Student affairs"]="#2f6f8f"; COLOR["Organ Systems I"]="#c25e00"; COLOR["Organ Systems II"]="#8a6b00"; COLOR["Preceptorship"]="#1f7a5a"; COLOR["Research Scholarship"]="#a33a3a"; COLOR["My deadlines"]="#4d5765";
 const MON=["January","February","March","April","May","June","July","August","September","October","November","December"];
 const WD=["Sun","Mon","Tue","Wed","Thu","Fri","Sat"];
-/* Sketchy Microbiology mapped onto the Foundations II Unit I sessions.
-   Retired/old-version lessons are left out. Times are the Sketchy runtimes. */
-const MICRO=[{"n": 1, "label": "Week 1 — Bacteriology", "from": "2026-09-28", "to": "2026-10-02", "sessions": [{"date": "2026-09-28", "title": "Staphylococcus and Related Gram-Positive Cocci", "v": [["Staphylococcus aureus", 10], ["Staphylococcus epidermidis and saprophyticus", 6]]}, {"date": "2026-09-29", "title": "Gram-Positive Cocci: Streptococcus, Viridans and Enterococcus", "v": [["Streptococcus pyogenes (Group A Strep)", 14], ["Streptococcus agalactiae (Group B Strep)", 5], ["Streptococcus pneumoniae and viridans", 9], ["Streptococcus gallolyticus (Group D Strep)", 7], ["Enterococcus faecium and faecalis", 4]]}, {"date": "2026-09-29", "title": "Gram-Positive Rods: Listeria, Erysipelothrix and Corynebacterium", "v": [["Listeria monocytogenes", 4], ["Corynebacterium diphtheriae", 6]]}, {"date": "2026-09-29", "title": "Gram-Positive Rods: spore-forming and non-spore-forming", "v": [["Bacillus anthracis and cereus", 9], ["Clostridium tetani", 6], ["Clostridium botulinum", 7], ["Clostridium perfringens", 5], ["Clostridioides difficile", 11], ["Actinomyces israelii", 3], ["Nocardia asteroides", 6]]}, {"date": "2026-09-29", "title": "Gram-Negative Rods: Enterobacteriaceae", "v": [["Klebsiella pneumoniae, Enterobacter spp., Serratia marcescens", 7], ["Salmonella — intro and NTS", 8], ["Salmonella — typhoidal", 8], ["Shigella spp.", 6], ["Escherichia coli (ETEC and EHEC)", 8], ["Yersinia enterocolitica and pestis", 7], ["Campylobacter jejuni", 4], ["Helicobacter pylori", 5], ["Proteus mirabilis", 2], ["Vibrio spp.", 3]]}, {"date": "2026-09-29", "title": "Other Gram-Negatives: Pseudomonas, Neisseria, Haemophilus, Bordetella", "v": [["Neisseria overview", 6], ["Neisseria meningitidis", 14], ["Neisseria gonorrhoeae", 9], ["Moraxella catarrhalis", 6], ["Pseudomonas aeruginosa", 9], ["Haemophilus influenzae", 8], ["Bordetella pertussis", 7], ["Legionella pneumophila", 7], ["Burkholderia pseudomallei and cepacia complex", 5]]}, {"date": "2026-10-01", "title": "Independent study: Chlamydia, Gardnerella and Mycoplasma", "v": [["Chlamydia trachomatis, C. pneumoniae, C. psittaci", 15], ["Gardnerella vaginalis", 5], ["Mycoplasma pneumoniae", 5]]}, {"date": "2026-10-01", "title": "Independent study: Spirochetes", "v": [["Treponema pallidum", 12], ["Borrelia burgdorferi", 8], ["Borrelia recurrentis", 5], ["Leptospira interrogans", 4]]}, {"date": "2026-10-02", "title": "Independent study: Mycobacteria", "v": [["Mycobacterium tuberculosis", 16], ["Mycobacterium leprae", 9], ["M. avium intracellulare, M. scrofulaceum, M. marinum", 7]]}, {"date": "2026-10-02", "title": "Independent study: Rickettsia and vector-borne", "v": [["Rickettsia overview", 3], ["Rickettsia rickettsii", 4], ["Rickettsia prowazekii", 4], ["Coxiella burnetii", 4], ["Anaplasma phagocytophilum and Ehrlichia chaffeensis", 6], ["Bartonella henselae", 4], ["Brucella spp.", 4], ["Francisella tularensis", 3], ["Pasteurella multocida", 3]]}]}, {"n": 2, "label": "Week 2 — Virology", "from": "2026-10-05", "to": "2026-10-09", "sessions": [{"date": "2026-10-05", "title": "DNA Viruses: Poxviruses, Parvovirus and Adenovirus", "v": [["Smallpox, cowpox and molluscum contagiosum (Poxviridae)", 8], ["Parvovirus B19", 7], ["Adenovirus", 4]]}, {"date": "2026-10-05", "title": "DNA Viruses: Papillomaviruses and Polyomaviruses", "v": [["Human papillomavirus", 13], ["JC and BK polyomavirus", 6]]}, {"date": "2026-10-05", "title": "DNA Viruses: Human Herpesviruses", "v": [["Herpes simplex virus types 1 and 2", 11], ["Varicella-zoster virus", 11], ["Epstein-Barr virus", 11], ["Cytomegalovirus", 11], ["HHV-6 and roseola", 5], ["HHV-8 and Kaposi's sarcoma", 7]]}, {"date": "2026-10-06", "title": "RNA Viruses: Picornaviruses", "v": [["Picornaviridae overview", 10], ["Poliovirus", 7], ["Coxsackievirus A and B", 5], ["Rhinovirus", 4], ["Hepatitis A virus", 6]]}, {"date": "2026-10-06", "title": "RNA Viruses: Coronaviruses, Noroviruses and Rubella", "v": [["Coronavirus (Coronaviridae)", 13], ["Norovirus and Norwalk virus", 5], ["Rubella virus (Matonaviridae)", 6]]}, {"date": "2026-10-06", "title": "RNA Viruses: Hepatitis and Delta virus", "v": [["Flaviviridae overview", 11], ["Hepatitis B viral basics and infectious disease", 10], ["Hepatitis B viral life cycle", 5], ["Hepatitis C virus", 6]]}, {"date": "2026-10-06", "title": "RNA Viruses: Retroviruses (HIV)", "v": [["HIV overview (Retroviridae)", 14], ["HIV life cycle (Retroviridae)", 8]]}, {"date": "2026-10-07", "title": "RNA Viruses: Paramyxoviruses and Orthomyxoviruses", "v": [["Influenzavirus (Orthomyxoviridae)", 18], ["Measles, mumps and parainfluenza", 13], ["RSV and human metapneumovirus", 6]]}, {"date": "2026-10-08", "title": "Independent study: Rhabdo-, Filo-, Bunya-, Arena- and Reoviruses", "v": [["Rabies virus (Rhabdoviridae)", 10], ["Ebolavirus and Marburgvirus", 4], ["Hantavirus, California encephalitis, Rift Valley fever", 5], ["Lymphocytic choriomeningitis virus", 5], ["Rotavirus and Colorado tick fever virus", 7], ["Equine encephalitis and chikungunya (Togaviridae)", 7]]}]}, {"n": 3, "label": "Week 3 — Parasitology, Mycology and Prions", "from": "2026-10-12", "to": "2026-10-16", "sessions": [{"date": "2026-10-12", "title": "Parasitology I and II: Protozoa", "v": [["Giardia lamblia", 5], ["Entamoeba histolytica", 7], ["Cryptosporidium spp.", 4], ["Toxoplasma gondii", 9], ["Trypanosoma brucei", 9], ["Naegleria fowleri", 6], ["Plasmodium — infection and life cycle", 12], ["Plasmodium — treatment and prophylaxis", 8], ["Babesia spp.", 7], ["Trypanosoma cruzi", 8], ["Leishmania braziliensis and donovani", 5], ["Trichomonas vaginalis", 7]]}, {"date": "2026-10-12", "title": "Parasitology II: Helminths and ectoparasites", "v": [["Intestinal nematodes — Enterobius, Ancylostoma, Necator, Ascaris, Strongyloides, Trichinella", 13], ["Tissue nematodes — Dracunculus, Wuchereria, Onchocerca, Toxocara, Loa loa", 11], ["Cestodes", 10], ["Trematodes", 10], ["Scabies, lice and crabs", 10]]}, {"date": "2026-10-13", "title": "Mycology Part I: systemic and cutaneous mycoses", "v": [["Histoplasma capsulatum", 9], ["Blastomyces dermatitidis", 5], ["Coccidioides immitis", 7], ["Paracoccidioides brasiliensis", 4], ["Malassezia furfur", 5], ["Epidermophyton, Trichophyton, Microsporum (dermatophytes)", 6], ["Sporothrix schenckii", 4]]}, {"date": "2026-10-14", "title": "Mycology Part II: opportunistic fungal infections", "v": [["Candida albicans", 12], ["Aspergillus fumigatus", 10], ["Cryptococcus neoformans", 9], ["Mucor and Rhizopus spp. (mucormycetes)", 6], ["Pneumocystis jirovecii", 5]]}, {"date": "2026-10-14", "title": "Prions", "v": [], "none": "Sketchy Microbiology has no prion lesson — use the lecture and Robbins instead."}]}, {"n": 4, "label": "Week 4 — Exam week", "from": "2026-10-19", "to": "2026-10-19", "sessions": [{"date": "2026-10-19", "title": "End-of-Unit Exam (NBME) and CTE — 08:00–12:00, AHC2 170", "v": [], "none": "Nothing new to watch. Re-watch anything you flagged; the NBME is cumulative over the whole unit."}]}];
-let micWk=null, MICDONE={};
-try{ MICDONE=JSON.parse(localStorage.getItem("ms1-sketchy")||"{}")||{}; }catch(e){ MICDONE={}; }
-function micSave(){ try{ localStorage.setItem("ms1-sketchy",JSON.stringify(MICDONE)); }catch(e){} }
 let off=new Set(), q="", qFocus=false, qCaret=null, view="cal", myGroup=null, wkCursor=null, calCursor=null, openKey=null, MINE=[], canSave=true;
 const KEY="ms1-shared-exams-v1";
 let clock24=true;
@@ -638,7 +596,7 @@ function bar(){
      <span class="spacer"></span>
      <span class="srch"><span class="mag">&#9906;</span>
        <input type="search" id="q" placeholder="Search quizzes, exams, OSCEs…"></span>
-     <span class="seg"><button id="vcal">Assignments</button><button id="vlist">List</button><button id="vwk">Class schedule</button><button id="vmic">Microbiology</button></span>
+     <span class="seg"><button id="vcal">Assignments</button><button id="vlist">List</button><button id="vwk">Class schedule</button></span>
      <span class="seg" id="clk"><button id="c24">24h</button><button id="c12">12h</button></span>
      <span class="grplab" id="grplab">My group</span><span class="seg" id="grp"></span>
      <button class="chip" id="addb">+ My deadline</button>
@@ -654,7 +612,6 @@ function bar(){
     document.getElementById("vcal").onclick=()=>{view="cal";render();};
     document.getElementById("vlist").onclick=()=>{view="list";render();};
     document.getElementById("vwk").onclick=()=>{view="week";render();};
-    document.getElementById("vmic").onclick=()=>{view="micro";render();};
     document.getElementById("grp").innerHTML=GROUPS.map(g=>
       `<button data-g="${g}">${g}</button>`).join("")+`<button data-g="">All</button>`;
     document.querySelectorAll("[data-g]").forEach(el=>el.onclick=()=>{
@@ -673,7 +630,6 @@ function bar(){
   document.getElementById("vcal").className=view==="cal"?"on":"";
   document.getElementById("vlist").className=view==="list"?"on":"";
   document.getElementById("vwk").className=view==="week"?"on":"";
-  { const vm=document.getElementById("vmic"); if(vm) vm.className=view==="micro"?"on":""; }
   { const qi=document.getElementById("q");
     if(qi) qi.placeholder = view==="week" ? "Search classes, rooms…" : "Search quizzes, exams, OSCEs…"; }
   document.getElementById("c24").className=clock24?"on":"";
@@ -682,8 +638,8 @@ function bar(){
     el.className=((el.dataset.g||null)===myGroup)?"on":"");
   document.getElementById("grp").style.display=view==="week"?"":"none";
   document.getElementById("grplab").style.display=view==="week"?"":"none";
-  document.getElementById("addb").style.display=(view==="week"||view==="micro")?"none":"";
-  document.getElementById("mine").style.display=(view==="week"||view==="micro")?"none":"";
+  document.getElementById("addb").style.display=view==="week"?"none":"";
+  document.getElementById("mine").style.display=view==="week"?"none":"";
 }
 /* mandatory sittings get underlined; flipped/team sessions get bolded */
 var MAND=new RegExp('(^|[^a-z])(osce|irat|trat|grat|exam|exams|midterm|practical)([^a-z]|$)','i');
@@ -1458,93 +1414,8 @@ function listView(all){
   }
   return out.join("");
 }
-/* ── Microbiology: what to watch, by teaching week ─────────────────────── */
-function micKey(s,name){ return s.date+"|"+name; }
-function micStats(w){
-  let n=0,d=0,m=0,dm=0;
-  for(const s of w.sessions) for(const v of s.v){
-    n++; m+=v[1];
-    if(MICDONE[micKey(s,v[0])]){ d++; dm+=v[1]; }
-  }
-  return {n,d,m,dm};
-}
-function hm(mins){ const h=Math.floor(mins/60), r=mins%60;
-  return h? (h+"h"+(r?" "+r+"m":"")) : (r+"m"); }
-function microView(){
-  const today=dkey(new Date());
-  if(micWk===null){
-    const cur=MICRO.findIndex(w=>today<=w.to);
-    micWk = cur<0 ? MICRO.length-1 : cur;
-  }
-  const w=MICRO[micWk], st=micStats(w);
-  const all=MICRO.reduce((a,x)=>{const s=micStats(x);return{n:a.n+s.n,d:a.d+s.d,m:a.m+s.m,dm:a.dm+s.dm};},{n:0,d:0,m:0,dm:0});
-  const dr=(a,b)=>b?Math.round(a/b*100):0;
-  const fd=k=>{const d=pk(k); return WD[d.getDay()]+" "+d.getDate()+" "+MON[d.getMonth()].slice(0,3);};
-
-  let h=`<div class="micbar">
-    <button id="mprev" ${micWk===0?"disabled":""} title="Previous week">&larr;</button>
-    <button id="mnow">This week</button>
-    <button id="mnext" ${micWk===MICRO.length-1?"disabled":""} title="Next week">&rarr;</button>
-    <div class="miclab"><b>${esc(w.label)}</b>
-      <span>${fd(w.from)}${w.from===w.to?"":" – "+fd(w.to)} &middot; ${st.n} video${st.n===1?"":"s"} &middot; ${hm(st.m)}</span>
-    </div>
-    <div class="micprog"><div class="micbarline"><i style="width:${dr(st.d,st.n)}%"></i></div>
-      <span>${st.d} / ${st.n} watched &middot; ${hm(st.m-st.dm)} left this week</span></div>
-  </div>
-  <div class="miccourse">Sketchy Microbiology, mapped onto Foundations II Unit I. Retired and
-    old-version lessons are left out. Ticks are saved in this browser.
-    Across the unit: <b>${all.d} / ${all.n}</b> watched, ${hm(all.m-all.dm)} of ${hm(all.m)} to go.</div>`;
-
-  for(const s of w.sessions){
-    const done=s.v.filter(v=>MICDONE[micKey(s,v[0])]).length;
-    const mins=s.v.reduce((a,v)=>a+v[1],0);
-    h+=`<section class="micsec">
-      <div class="michead">
-        <div><span class="micdate">${fd(s.date)}</span>
-             <span class="mictitle">${esc(s.title)}</span></div>
-        ${s.v.length?`<span class="miccount${done===s.v.length?" full":""}">${done}/${s.v.length} &middot; ${hm(mins)}</span>`:""}
-      </div>`;
-    if(!s.v.length){ h+=`<div class="micnone">${esc(s.none||"")}</div></section>`; continue; }
-    h+=`<ul class="miclist">`+s.v.map(v=>{
-      const k=micKey(s,v[0]), on=!!MICDONE[k];
-      return `<li class="microw${on?" on":""}" data-mk="${esc(k)}">
-        <span class="micck">${on?"&#10003;":""}</span>
-        <span class="micname">${esc(v[0])}</span>
-        <span class="micmin">${v[1]}m</span></li>`;
-    }).join("")+`</ul>
-      <div class="micact"><button class="micall" data-mall="${esc(s.date+"|"+s.title)}">${
-        done===s.v.length?"Clear this session":"Tick the whole session"}</button></div>
-    </section>`;
-  }
-  return h;
-}
-function bindMicro(){
-  document.querySelectorAll("[data-mk]").forEach(el=>el.onclick=()=>{
-    const k=el.dataset.mk;
-    if(MICDONE[k]) delete MICDONE[k]; else MICDONE[k]=1;
-    micSave(); render();
-  });
-  document.querySelectorAll("[data-mall]").forEach(el=>el.onclick=()=>{
-    const [d,t]=el.dataset.mall.split("|");
-    const s=MICRO[micWk].sessions.find(x=>x.date===d&&x.title===t);
-    if(!s) return;
-    const allOn=s.v.every(v=>MICDONE[micKey(s,v[0])]);
-    for(const v of s.v){ const k=micKey(s,v[0]); if(allOn) delete MICDONE[k]; else MICDONE[k]=1; }
-    micSave(); render();
-  });
-  const g=(id,fn)=>{const el=document.getElementById(id); if(el&&!el.disabled) el.onclick=fn;};
-  g("mprev",()=>{ if(micWk>0){micWk--;render();} });
-  g("mnext",()=>{ if(micWk<MICRO.length-1){micWk++;render();} });
-  g("mnow",()=>{ const t=dkey(new Date());
-    const c=MICRO.findIndex(w=>t<=w.to); micWk = c<0?MICRO.length-1:c; render(); });
-}
 function render(){
   bar(); stats();
-  if(view==="micro"){
-    document.getElementById("list").innerHTML=microView();
-    bindMicro();
-    return;
-  }
   if(view==="week"){
     document.getElementById("list").innerHTML=weekView();
     fitWeekEvents();
